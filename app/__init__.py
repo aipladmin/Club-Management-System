@@ -26,13 +26,13 @@ def create_app():
     app.config['MYSQL_DATABASE_HOST'] =  'aipldb.cttdwedcfzhs.ap-south-1.rds.amazonaws.com'
     mysql.init_app(app)
     
-    #ADMIN REGISTRATION
+    #ADMIN BLUEPRINT
     from app.entities.admin import (
         admin
     )
     app.register_blueprint(admin.admin)
 
-    #USER REGISTRATION
+    #USER BLUEPRINT
     from app.entities.user import (
         user
     )
