@@ -12,15 +12,10 @@ user = Blueprint('user',
 # def index():
 #     testing()
 #     return "render_template('index.html')"
-@user.route('/')
+
 @user.route('/index')
 def index():
     return render_template('user_index.html')
 
-@user.route('/test')
-def test():
-    data = mysql_query("select * from user_type_master;")
-    print(data)
-    return "test Data"
 
 

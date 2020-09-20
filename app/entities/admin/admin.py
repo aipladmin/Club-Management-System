@@ -13,24 +13,9 @@ admin = Blueprint('admin',
 #     testing()
 #     return "render_template('index.html')"
 
-@admin.route('/')
 @admin.route('/index')
 def index():
     return render_template('index.html')
-
-@admin.route('/adminroles')
-def adminroles():
-
-    return render_template('test.html')
-
-@admin.route('/adminrolescr',methods=['POST'])
-def adminrolescr():
-    if request.method=="POST":
-        email = request.form['email']
-        password = request.form['password']
-        print(email,password)
-        return "POST DATA"
-    return "Data"
 
 
 
