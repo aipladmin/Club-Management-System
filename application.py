@@ -1,4 +1,4 @@
-# appplication.py
+# application.py
 from flask import Flask
 
 from app import create_app
