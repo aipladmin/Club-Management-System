@@ -23,6 +23,7 @@ def mysql_query(sql):
     connection = mysql.connect()
     cursor = connection.cursor()
     if sql.strip().split(' ')[0].lower() == "select" :
+        print(sql)
         cursor.execute(sql)
         print(cursor._executed)
         
@@ -42,3 +43,14 @@ def mysql_query(sql):
         cursor.close()
         connection.close()
         return None
+
+# DECORATORS
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'email' in session and 'role' in session:
+            return f(*args, **kwargs)
+        else:
+            # flash('You need to login first')
+            return redirect(url_for('auth.login'))
+    return wrap

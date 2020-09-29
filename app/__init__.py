@@ -17,8 +17,12 @@ def create_app():
 
     app.config.from_object(Config)
 
+    #AUTH BLUEPRINT
+    from app.entities.auth import(
+        auth
+    )
+    app.register_blueprint(auth.auth)
     
-
     #ADMIN BLUEPRINT
     from app.entities.admin import (
         admin
@@ -26,10 +30,10 @@ def create_app():
     app.register_blueprint(admin.admin)
 
     #USER BLUEPRINT
-    from app.entities.user import (
-        user
+    from app.entities.member import (
+        member
     )
-    app.register_blueprint(user.user)
+    app.register_blueprint(member.member)
     
 
     return app
