@@ -30,7 +30,7 @@ def create_app():
     app.register_blueprint(admin.admin)
 
     #USER BLUEPRINT
-    from app.entities.user import (
+    from app.entities.member import (
         member
     )
     app.register_blueprint(member.member)
