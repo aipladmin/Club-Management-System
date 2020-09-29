@@ -17,26 +17,23 @@ def create_app():
 
     app.config.from_object(Config)
 
+    #AUTH BLUEPRINT
+    from app.entities.auth import(
+        auth
+    )
+    app.register_blueprint(auth.auth)
     
-
-    mysql = MySQL()
-    app.config['MYSQL_DATABASE_USER'] = 'admin'
-    app.config['MYSQL_DATABASE_PASSWORD'] = 'adminadmin'
-    app.config['MYSQL_DATABASE_DB'] = 'finrep'
-    app.config['MYSQL_DATABASE_HOST'] =  'aipldb.cttdwedcfzhs.ap-south-1.rds.amazonaws.com'
-    mysql.init_app(app)
-    
-    #ADMIN REGISTRATION
+    #ADMIN BLUEPRINT
     from app.entities.admin import (
         admin
     )
     app.register_blueprint(admin.admin)
 
-    #USER REGISTRATION
-    from app.entities.user import (
-        user
+    #USER BLUEPRINT
+    from app.entities.member import (
+        member
     )
-    app.register_blueprint(user.user)
+    app.register_blueprint(member.member)
     
 
     return app
