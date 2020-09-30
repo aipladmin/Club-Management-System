@@ -16,7 +16,7 @@ admin = Blueprint('admin',
 @admin.route('/')
 @admin.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('admin_index.html')
 
 @admin.route('/adminroles')
 def adminroles():
