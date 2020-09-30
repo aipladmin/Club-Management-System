@@ -23,10 +23,20 @@ def loginscr():
                     WHERE
                         user_master.email = '{}' AND user_master.password = '{}'; '''.format(request.form['emailid'],request.form['password']) )
     if data[0]['count'] == 1:
+        session['email'] = request.form['emailid']
         if data[0]['role'].lower() == "admin":
             session['role'] = data[0]['role']
-            session['email'] = request.form['emailid']
             return redirect(url_for('admin.index'))
+        if data[0]['role'].lower() == "manager":
+            session['role'] = data[0]['role']
+            return redirect(url_for('manager.index'))
+        if data[0]['role'].lower() == "employee":
+            session['role'] = data[0]['role']
+            return redirect(url_for('employee.index'))
+        if data[0]['role'].lower() == "member":
+            session['role'] = data[0]['role']
+            return redirect(url_for('member.index'))
+
         if data[0]['count'] == 0:
             return "Does not exsist"
         return None
