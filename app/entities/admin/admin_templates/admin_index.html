@@ -29,26 +29,116 @@
       <hr class="sidebar-divider">
 
 
+     <!-- ************************ADMIN DASHBOARD*********************** -->
+
+
       {% if session['role'].lower() == "admin" %}
       <!-- Heading -->
-      <div class="sidebar-heading">
-        Interface
-      </div>
+
       <!-- Nav Item - Pages Collapse Menu -->
-       <li class="nav-item">
+
+     <li class="nav-item">
+        <a class="nav-link collapsed" href="manager_index.html">
+          <span>Personal information</span>
+        </a>
+      </li>
+
+
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
+          <span>Member details</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="">Boards</a>
-            <a class="collapse-item" href="">Boards</a>
-            <a class="collapse-item" href="{{ url_for('admin.adminroles') }}">Cards</a>
+            <a class="collapse-item" href="#">View members</a>
+            <a class="collapse-item" href="#">Due payments</a>
+            <a class="collapse-item" href="#">Payment History</a>
           </div>
         </div>
       </li>
+
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+          <span>Employee details</span>
+        </a>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="#">View employees</a>
+            <a class="collapse-item" href="#">Blocked employees</a>
+          </div>
+        </div>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseTwo">
+          <span>Manager details</span>
+        </a>
+        <div id="collapseSeven" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="#">View managers</a>
+            <a class="collapse-item" href="#">Blocked managers</a>
+          </div>
+        </div>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseTwo">
+          <span>Complains</span>
+        </a>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="#">Member's complain</a>
+            <a class="collapse-item" href="#">Employee's complain</a>
+          </div>
+        </div>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="manager_index.html">
+          <span>Leave applications</span>
+        </a>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="manager_index.html">
+          <span>View feedback</span>
+        </a>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseTwo">
+          <span>Security</span>
+        </a>
+        <div id="collapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="#">Change password</a>
+          </div>
+        </div>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseTwo">
+          <span>Reports</span>
+        </a>
+        <div id="collapseSix" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="#">Report 1</a>
+            <a class="collapse-item" href="#">Report 2</a>
+            <a class="collapse-item" href="#">Report 3</a>
+          </div>
+        </div>
+      </li>
+
+
+
     
       {% endif %}
       {% if session['role'].lower() == "manager" %}

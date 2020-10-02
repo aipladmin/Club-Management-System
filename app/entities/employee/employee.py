@@ -11,5 +11,5 @@ employee = Blueprint('employee',
 @employee.route('/')
 @employee.route('/index')
 def index():
-    testing()
+    # testing()
     return render_template('employee_index.html')
