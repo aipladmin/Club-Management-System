@@ -15,7 +15,7 @@ member = Blueprint('member',
 @member.route('/')
 @member.route('/index')
 def index():
-    return render_template('user_index.html')
+    return render_template('member_index.html')
 
 @member.route('/test')
 def test():

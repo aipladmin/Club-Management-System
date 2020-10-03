@@ -6,9 +6,10 @@ auth = Blueprint('auth',
                 __name__,
                 template_folder="auth_templates",
                 static_folder="auth_static",
-                url_prefix='/auth')
+                url_prefix='/')
 
 @auth.route('/')
+@auth.route('/auth')
 def authenticate():
     return render_template('login.html')
 
