@@ -29,7 +29,19 @@ def create_app():
     )
     app.register_blueprint(admin.admin)
 
-    #USER BLUEPRINT
+    #MANAGER BLUEPRINT
+    from app.entities.manager import(
+        manager
+    )
+    app.register_blueprint(manager.manager)
+
+    #EMPLOYEE BLUEPRINT
+    from app.entities.employee import(
+        employee
+    )
+    app.register_blueprint(employee.employee)
+
+    #MEMBER BLUEPRINT
     from app.entities.member import (
         member
     )

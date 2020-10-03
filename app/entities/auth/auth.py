@@ -6,9 +6,10 @@ auth = Blueprint('auth',
                 __name__,
                 template_folder="auth_templates",
                 static_folder="auth_static",
-                url_prefix='/auth')
+                url_prefix='/')
 
 @auth.route('/')
+@auth.route('/auth')
 def authenticate():
     return render_template('login.html')
 
@@ -23,11 +24,23 @@ def loginscr():
                     WHERE
                         user_master.email = '{}' AND user_master.password = '{}'; '''.format(request.form['emailid'],request.form['password']) )
     if data[0]['count'] == 1:
-        session['role'] = data[0]['role']
         session['email'] = request.form['emailid']
-        return render_template('index.html')
-    if data[0]['count'] == 0:
-        return "Does not exsist"
+        if data[0]['role'].lower() == "admin":
+            session['role'] = data[0]['role']
+            return redirect(url_for('admin.index'))
+        if data[0]['role'].lower() == "manager":
+            session['role'] = data[0]['role']
+            return redirect(url_for('manager.index'))
+        if data[0]['role'].lower() == "employee":
+            session['role'] = data[0]['role']
+            return redirect(url_for('employee.index'))
+        if data[0]['role'].lower() == "member":
+            session['role'] = data[0]['role']
+            return redirect(url_for('member.index'))
+
+        if data[0]['count'] == 0:
+            return "Does not exsist"
+        return None
     return "loginscr"
 
 

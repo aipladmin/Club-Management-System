@@ -1,4 +1,4 @@
-{% include 'header.html' %}
+{% include 'member_header.html' %}
 <body id="page-top">
 
   <!-- Page Wrapper -->
@@ -44,6 +44,8 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Components:</h6>
             <a class="collapse-item" href="">Boards</a>
+            <a class="collapse-item" href="">Boards</a>
+            <a class="collapse-item" href="{{ url_for('admin.adminroles') }}">Cards</a>
           </div>
         </div>
       </li>
@@ -299,4 +301,4 @@
       </div>
     </div>
   </div>
-{% include 'footer.html' %}
+{% include 'member_footer.html' %}
