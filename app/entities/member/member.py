@@ -23,4 +23,13 @@ def test():
     print(data)
     return "test Data"
 
+@member.route('/Complaints')
+def complaints():
+	return render_template('member_complaint.html')
+
+@member.route('/Feedback')
+def feedback():
+	return render_template('member_feedback.html')
+
+
 
