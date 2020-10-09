@@ -1,0 +1,338 @@
+{% extends "admin_index.html" %}
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Branch Information </h1>
+      <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+    </div>
+
+<div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-12 col-md-9 ">
+                                                <a href="#" class="btn btn-success mb-2" data-toggle="modal" data-target="#AddModal"><i class="fa fa-plus-square" aria-hidden="true"></i> Add Branch</a>
+
+
+                                                    <!--Add Branch Modal -->
+                                                        <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModal" aria-hidden="true">
+                                                          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                              <div class="modal-header">
+                                                                <h5 class="modal-title" id="ModalTitle">Add New Branch</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                  <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                              </div>
+                                                              <div class="modal-body">
+
+                                                                  <form autocomplete="off" method="POST" action="{{ url_for('admin.addbranch') }}">
+                                                                          <div class="form-row">
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputBranchName">Branch name</label>
+                                                                              <input type="text" name="branch_name" class="form-control" id="inputBranchName" placeholder="Branch name">
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputEmail4">Email</label>
+                                                                              <input type="Email" name="email" class="form-control" id="inputEmail4" placeholder="abc123@bcms.com">
+                                                                            </div>
+                                                                          </div>
+
+                                                                          <div class="form-row">
+
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputPhone">Phone No.</label>
+                                                                              <input type="text" name="phone" class="form-control" id="inputPhone" placeholder="Branch phone no." >
+                                                                            </div>
+                                                                          </div>
+
+                                                                          <div class="form-group">
+                                                                            <label for="inputAddres1">Address line 1</label>
+                                                                            <input type="text" name="addr1" class="form-control" id="inputAddress1" placeholder="123 A-block">
+                                                                          </div>
+                                                                          <div class="form-group">
+                                                                            <label for="inputAddress2">Address line 2</label>
+                                                                            <input type="text" name="addr2" class="form-control" id="inputAddress2" placeholder="Apartment, floor">
+                                                                          </div>
+
+                                                                           <div class="form-group">
+                                                                            <label for="inputAddress3">Address line 3</label>
+                                                                            <input type="text" name="addr3" class="form-control" id="inputAddress3" placeholder="Street, Building, complex name">
+                                                                          </div>
+
+                                                                          <div class="form-row">
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputArea">Area</label>
+                                                                              <input type="text" name="area" class="form-control" id="inputArea" placeholder="Location">
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputZip">Pincode</label>
+                                                                              <input type="text" name="pincode" class="form-control" id="inputZip">
+                                                                            </div>
+                                                                          </div>
+
+
+                                                                          <div class="form-row">
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputCity">City</label>
+                                                                              <input type="text" name="city" class="form-control" id="inputCity">
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputState">State</label>
+                                                                              <input type="text" name="state" id="inputState" class="form-control">
+                                                                            </div>
+                                                                          </div>
+
+                                                              </div>
+                                                              <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="submit" name="insert" class="btn btn-primary">Save changes</button>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                </form>
+
+                                            </div>
+
+                                            <!--Edit Branch Modal -->
+                                            <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
+                                                          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                              <div class="modal-header">
+                                                                <h5 class="modal-title" id="ModalTitle">Edit Branch Details</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                  <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                              </div>
+                                                              <div class="modal-body">
+
+                                                                  <form>
+                                                                          <div class="form-row">
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputBranchName">Branch name</label>
+                                                                              <input type="text" class="form-control" id="inputBranchName" placeholder="Branch name">
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputEmail4">Email</label>
+                                                                              <input type="Email" class="form-control" id="inputEmail4" placeholder="abc123@bcms.com">
+                                                                            </div>
+                                                                          </div>
+
+                                                                          <div class="form-row">
+
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputPhone">Phone No.</label>
+                                                                              <input type="text" class="form-control" id="inputPhone" placeholder="Branch phone no.">
+                                                                            </div>
+                                                                          </div>
+
+                                                                          <div class="form-group">
+                                                                            <label for="inputAddres1">Address line 1</label>
+                                                                            <input type="text" class="form-control" id="inputAddress1" placeholder="123 A-block">
+                                                                          </div>
+                                                                          <div class="form-group">
+                                                                            <label for="inputAddress2">Address line 2</label>
+                                                                            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, floor">
+                                                                          </div>
+
+                                                                           <div class="form-group">
+                                                                            <label for="inputAddress3">Address line 3</label>
+                                                                            <input type="text" class="form-control" id="inputAddress3" placeholder="Street, Building, complex name">
+                                                                          </div>
+
+                                                                          <div class="form-row">
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputArea">Area</label>
+                                                                              <input type="text" class="form-control" id="inputArea" placeholder="Location">
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputZip">Pincode</label>
+                                                                              <input type="text" class="form-control" id="inputZip">
+                                                                            </div>
+                                                                          </div>
+
+
+                                                                          <div class="form-row">
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputCity">City</label>
+                                                                              <input type="text" class="form-control" id="inputCity">
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                              <label for="inputState">State</label>
+                                                                              <input type="text" id="inputState" class="form-control">
+                                                                            </div>
+                                                                          </div>
+
+                                                                        </form>
+
+                                                              </div>
+                                                              <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+
+
+
+                                            <div class="col-12 table-responsive" >
+
+                                                <table class="table table-striped" >
+                                                  <thead class="thead-dark">
+                                                    <tr>
+                                                      <th scope="col">Branch ID</th>
+                                                      <th scope="col">Branch Name</th>
+                                                      <th scope="col">Email</th>
+                                                      <th scope="col">Manager</th>
+                                                      <th scope="col">Phone No.</th>
+                                                      <th scope="col">Pincode</th>
+                                                      <th scope="col">Address line 1</th>
+                                                      <th scope="col">Address line 2</th>
+                                                      <th scope="col">Address line 3</th>
+                                                      <th scope="col">Area</th>
+                                                      <th scope="col">City</th>
+                                                      <th scope="col">State</th>
+                                                      <th scope="col">Action</th>
+
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <tr>
+                                                      <th scope="row">1</th>
+                                                      <td>Mark</td>
+                                                      <td>Otto</td>
+                                                      <td>hello</td>
+                                                      <td>Otto</td>
+                                                      <td>Otto</td>
+                                                      <td>Otto</td>
+                                                      <td>Otto</td>
+                                                      <td>Otto</td>
+                                                      <td>Otto</td>
+                                                      <td>Otto</td>
+                                                      <td>Otto</td>
+                                                      <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#EditModal"> <i class="fas fa-edit"></i>Edit</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                      <th scope="row">2</th>
+                                                      <td>Jacob</td>
+                                                      <td>Thornton</td>
+                                                        <td>Thornton ramsey</td>
+                                                        <td>Thornton</td>
+                                                        <td>Thornton</td>
+                                                        <td>Thornton</td>
+                                                        <td>hello</td>
+                                                        <td>Thornton</td>
+                                                        <td>Thornton</td>
+                                                        <td>Thornton</td>
+                                                        <td>Thornton</td>
+                                                        <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#EditModal"><i class="fas fa-edit"></i>Edit</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">3</th>
+                                                        <td>Larry</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>@twitter</td>
+                                                        <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#EditModal"><i class="fas fa-edit"></i>Edit</button></td>
+                                                    </tr>
+
+                                                   <tr>
+                                                      <th scope="row">3</th>
+                                                        <td>Larry</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                       <td>the Bird</td>
+                                                       <td>the Bird</td>
+                                                      <td>@twitter</td>
+                                                       <td><button type="button" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Edit</button></td>
+                                                    </tr>
+
+                                                   <tr>
+                                                      <th scope="row">3</th>
+                                                      <td>Larry</td>
+                                                      <td>the Bird</td>
+                                                      <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                       <td>the Bird</td>
+                                                       <td>the Bird</td>
+                                                      <td>@twitter</td>
+                                                       <td><button type="button" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Edit</button></td>
+                                                    </tr>
+
+                                                   <tr>
+                                                      <th scope="row">3</th>
+                                                      <td>Larry</td>
+                                                      <td>the Bird</td>
+                                                      <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                        <td>the Bird</td>
+                                                       <td>the Bird</td>
+                                                       <td>the Bird</td>
+                                                      <td>@twitter</td>
+                                                       <td><button type="button" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Edit</button></td>
+                                                    </tr>
+
+                                                  </tbody>
+                                                </table>
+
+                                            </div>
+
+
+
+                                            <div class="col-md  ">
+                                                 <nav aria-label="Page navigation example">
+                                                  <ul class="pagination">
+                                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                                  </ul>
+                                                </nav>
+                                             </div>
+
+
+
+
+
+                                        </div>
+                                    </div> <!-- end card-body-->
+                                </div> <!-- end card-->
+                            </div> <!-- end col -->
+                        </div>
+
+
+
+
+
+
+
+
+
+</div>
+{% endblock %}

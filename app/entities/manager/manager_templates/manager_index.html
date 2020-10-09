@@ -29,33 +29,8 @@
       <hr class="sidebar-divider">
 
 
-     <!-- ************************ADMIN DASHBOARD*********************** -->
-
-      {% if session['role'].lower() == "admin" %}
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Interface
-      </div>
-      <!-- Nav Item - Pages Collapse Menu -->
-       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="">Boards</a>
-            <a class="collapse-item" href="">Boards</a>
-            <a class="collapse-item" href="{{ url_for('admin.adminroles') }}">Cards</a>
-          </div>
-        </div>
-      </li>
-
 
      <!-- ************************MANAGER DASHBOARD*********************** -->
-
-      {% endif %}
       {% if session['role'].lower() == "manager" %}
       <!-- Heading -->
 
@@ -63,6 +38,11 @@
        <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url_for('manager.personalinfo') }}">
           <span>Personal information</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url_for('manager.amenities') }}">
+          <span>Amenities</span>
         </a>
       </li>
 
