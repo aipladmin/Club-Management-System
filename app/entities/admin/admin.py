@@ -34,7 +34,32 @@ def adminrolescr():
 
 @admin.route('/branch')
 def branch():
-    return render_template('admin_branch.html')
+    branchdetails=mysql_query(''' SELECT 
+    branch_master.BID,
+    branch_master.branch_name,
+    branch_master.branch_email,
+    CONCAT(branch_master.Address_Line1,
+            ', ',branch_master.Address_Line2,
+            ', ',branch_master.Address_Line3) AS 'address',
+    branch_master.area,
+    branch_master.city,
+    branch_master.pincode,
+    branch_master.state,
+    
+    CONCAT(user_master.first_name,
+            ' ',
+            user_master.last_name) AS 'fullname'
+FROM
+    branch_master
+        INNER JOIN
+    manager_master ON manager_master.bid = branch_master.bid
+        INNER JOIN
+    user_master ON user_master.uid = manager_master.uid; ''')
+
+
+    return render_template('admin_branch.html',branchdetails=branchdetails)
+
+
 
 @admin.route('/addbranch',methods=["POST"])
 def addbranch():
@@ -54,6 +79,23 @@ def addbranch():
                             VALUES('{}','{}','{}','{}','{}','{}','{}','{}',{}); '''.format(request.form['branch_name'],request.form['email'],request.form['addr1'],request.form['addr2'],request.form['addr3'],request.form['area'],request.form['city'],request.form['state'],request.form['pincode']))
             except Exception as e:
                 return str(e)
+            return redirect(url_for("admin.branch"))
+
+        if "edit" in request.form:
+            mysql_query('''UPDATE `bcms`.`branch_master`
+                            SET
+                            `branch_name` = '{}',
+                            `branch_email` = '{}',
+                            `Address_Line1` = '{}',
+                            `Address_Line2` = '{}',
+                            `Address_Line3` = '{}',
+                            `area` = '{}',
+                            `city` = '{}',
+                            `state` = '{}',
+                            `pincode` = {}
+                            WHERE `BID` = {};
+                            '''.format(request.form['branch_name'],request.form['email'],request.form['addr1'],request.form['addr2'],request.form['addr3'],request.form['area'],request.form['city'],request.form['state'],request.form['pincode'],request.form['edit']))
+
 
             return redirect(url_for("admin.branch"))
 
@@ -62,3 +104,92 @@ def addbranch():
 
     return "hello there is an error! please fixx it bruh"
 
+
+
+@admin.route('/empdetails')
+def empdetails():
+    EmpDetail = mysql_query('''SELECT 
+                                employee_category.Description,
+                                employee_master.Joining_Date,
+                                employee_master.Leaving_Date,
+                                employee_master.Time_period,
+                                employee_master.Salary,
+                                user_master.gender,
+                                user_master.dob,
+                                user_master.contact_no,
+                                user_master.email,
+                                CONCAT(user_master.first_name,
+                                        ' ',
+                                        user_master.middle_name,
+                                        ' ',
+                                        user_master.Last_name) AS 'fullname',
+                                CONCAT(user_master.address_line_1,
+                                        ', ',
+                                        user_master.address_line_2,
+                                        ', ',
+                                        user_master.address_area,
+                                        ',',
+                                        user_master.city,
+                                        ', ',
+                                        user_master.state,
+                                        ',',
+                                        user_master.pincode,
+                                        ',',
+                                        user_master.country) AS 'address'
+                            FROM
+                                user_master
+                                    INNER JOIN
+                                employee_master ON employee_master.uid = user_master.uid
+                                    INNER JOIN
+                                employee_category ON employee_category.ecatid = employee_master.ecatid;''')
+
+
+
+
+    return render_template('emp_details.html',EmpDetail=EmpDetail)
+
+
+@admin.route('/mandetails')
+def mandetails():
+
+
+    return render_template('manager_details.html')
+
+
+@admin.route('/memberdetails')
+def memberdetails():
+    MemDetail = mysql_query('''SELECT 
+                                membership_master.memid,
+                                membership_master.description,
+                                membership_master.duration,
+                                user_master.gender,
+                                user_master.dob,
+                                user_master.contact_no,
+                                user_master.email,
+                                CONCAT(user_master.first_name,
+                                        ' ',
+                                        user_master.middle_name,
+                                        ' ',
+                                        user_master.Last_name) AS 'fullname',
+                                CONCAT(user_master.address_line_1,
+                                        ', ',
+                                        user_master.address_line_2,
+                                        ', ',
+                                        user_master.address_area,
+                                        ',',
+                                        user_master.city,
+                                        ', ',
+                                        user_master.state,
+                                        ',',
+                                        user_master.pincode,
+                                        ',',
+                                        user_master.country) AS 'address'
+                            FROM
+                                user_master
+                                    INNER JOIN
+                                member_master ON member_master.uid = user_master.uid
+                                    INNER JOIN
+                                membership_master ON membership_master.memid = member_master.memid;''')
+    
+    
+    return render_template('member_details.html',MemDetail=MemDetail)
