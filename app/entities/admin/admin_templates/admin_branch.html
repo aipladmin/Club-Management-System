@@ -6,7 +6,7 @@
       <h1 class="h3 mb-0 text-gray-800">Branch Information </h1>
       <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
     </div>
-
+{#{{  branchdetails }}#}
 <div class="row">
                             <div class="col-12">
                                 <div class="card">
@@ -16,7 +16,7 @@
                                                 <a href="#" class="btn btn-success mb-2" data-toggle="modal" data-target="#AddModal"><i class="fa fa-plus-square" aria-hidden="true"></i> Add Branch</a>
 
 
-                                                    <!--Add Branch Modal -->
+                                            <!--Add Branch Modal -->
                                                         <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModal" aria-hidden="true">
                                                           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                             <div class="modal-content">
@@ -89,7 +89,7 @@
                                                               </div>
                                                               <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="submit" name="insert" class="btn btn-primary">Save changes</button>
+                                                                <button type="submit" name="insert" class="btn btn-primary">Save</button>
                                                               </div>
                                                             </div>
                                                           </div>
@@ -98,8 +98,48 @@
 
                                             </div>
 
-                                            <!--Edit Branch Modal -->
-                                            <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
+                                            <!-- End ADD BRANCH MODAL -->
+
+
+
+                                            <div class="col-12 table-responsive text-nowrap" >
+
+                                                <table class="table table-striped" >
+                                                  <thead class="thead-dark">
+                                                    <tr>
+                                                      <th scope="col">Branch ID</th>
+                                                      <th scope="col">Branch Name</th>
+                                                      <th scope="col">Email</th>
+                                                      <th scope="col">Manager</th>
+{#                                                      <th scope="col">Phone No.</th>#}
+                                                      <th scope="col">Pincode</th>
+                                                      <th scope="col">Address</th>
+                                                      <th scope="col">Area</th>
+                                                      <th scope="col">City</th>
+                                                      <th scope="col">State</th>
+                                                      <th scope="col">Action</th>
+
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                   {% for x in branchdetails %}
+                                                    <tr>
+                                                      <td>{{ x['BID'] }}</td>
+                                                      <td>{{ x['branch_name']|capitalize}}</td>
+                                                      <td>{{ x['branch_email'] }}</td>
+                                                      <td>{{ x['fullname']|capitalize }}</td>
+                                                      <td>{{ x['pincode'] }}</td>
+                                                      <td>{{ x['address'] }}</td>
+                                                      <td>{{ x['area'] }}</td>
+                                                      <td>{{ x['city'] }}</td>
+                                                      <td>{{ x['state'] }}</td>
+                                                      <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#{{ x['area'] }}"> <i class="fas fa-edit"></i>Edit</button></td>
+                                                    </tr>
+
+
+                                                    <!--Edit Branch Modal -->
+
+                                                    <div class="modal fade" id="{{ x['area'] }}" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
                                                           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                             <div class="modal-content">
                                                               <div class="modal-header">
@@ -110,15 +150,17 @@
                                                               </div>
                                                               <div class="modal-body">
 
-                                                                  <form>
+
+
+                                                                  <form autocomplete="off" method="POST" action="{{ url_for('admin.addbranch') }}">
                                                                           <div class="form-row">
                                                                             <div class="form-group col-md-6">
                                                                               <label for="inputBranchName">Branch name</label>
-                                                                              <input type="text" class="form-control" id="inputBranchName" placeholder="Branch name">
+                                                                              <input type="text" name="branch_name" class="form-control" id="inputBranchName" value="{{ x['branch_name'] }}">
                                                                             </div>
                                                                             <div class="form-group col-md-6">
                                                                               <label for="inputEmail4">Email</label>
-                                                                              <input type="Email" class="form-control" id="inputEmail4" placeholder="abc123@bcms.com">
+                                                                              <input type="Email" name="email" class="form-control" id="inputEmail4" value="{{ x['branch_email'] }}">
                                                                             </div>
                                                                           </div>
 
@@ -126,33 +168,33 @@
 
                                                                             <div class="form-group col-md-6">
                                                                               <label for="inputPhone">Phone No.</label>
-                                                                              <input type="text" class="form-control" id="inputPhone" placeholder="Branch phone no.">
+                                                                              <input type="text" name="phone" class="form-control" id="inputPhone" placeholder="Branch phone no." >
                                                                             </div>
                                                                           </div>
 
                                                                           <div class="form-group">
                                                                             <label for="inputAddres1">Address line 1</label>
-                                                                            <input type="text" class="form-control" id="inputAddress1" placeholder="123 A-block">
+                                                                            <input type="text" name="addr1" class="form-control" id="inputAddress1" value="{{ x['Address_Line1'] }}">
                                                                           </div>
                                                                           <div class="form-group">
                                                                             <label for="inputAddress2">Address line 2</label>
-                                                                            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, floor">
+                                                                            <input type="text" name="addr2" class="form-control" id="inputAddress2" value="{{ x['Address_Line2'] }}">
                                                                           </div>
 
                                                                            <div class="form-group">
                                                                             <label for="inputAddress3">Address line 3</label>
-                                                                            <input type="text" class="form-control" id="inputAddress3" placeholder="Street, Building, complex name">
+                                                                            <input type="text" name="addr3" class="form-control" id="inputAddress3" value="{{ x['Address_Line3'] }}">
                                                                           </div>
 
                                                                           <div class="form-row">
                                                                             <div class="form-group col-md-6">
                                                                               <label for="inputArea">Area</label>
-                                                                              <input type="text" class="form-control" id="inputArea" placeholder="Location">
+                                                                              <input type="text" name="area" class="form-control" id="inputArea" value="{{ x['area'] }}">
                                                                             </div>
 
                                                                             <div class="form-group col-md-6">
                                                                               <label for="inputZip">Pincode</label>
-                                                                              <input type="text" class="form-control" id="inputZip">
+                                                                              <input type="text" name="pincode" class="form-control" value="{{ x['pincode'] }}">
                                                                             </div>
                                                                           </div>
 
@@ -160,143 +202,27 @@
                                                                           <div class="form-row">
                                                                             <div class="form-group col-md-6">
                                                                               <label for="inputCity">City</label>
-                                                                              <input type="text" class="form-control" id="inputCity">
+                                                                              <input type="text" name="city" class="form-control" id="inputCity" value="{{ x['city'] }}">
                                                                             </div>
                                                                             <div class="form-group col-md-6">
                                                                               <label for="inputState">State</label>
-                                                                              <input type="text" id="inputState" class="form-control">
+                                                                              <input type="text" name="state" id="inputState" class="form-control" value="{{ x['state'] }}">
                                                                             </div>
                                                                           </div>
-
-                                                                        </form>
 
                                                               </div>
                                                               <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                                <button type="submit" name="edit" value="{{ x['BID'] }}" class="btn btn-primary">Save changes</button>
                                                               </div>
                                                             </div>
                                                           </div>
                                                         </div>
 
+                                                     <!-- END EDIT MODAL -->
 
 
-                                            <div class="col-12 table-responsive" >
-
-                                                <table class="table table-striped" >
-                                                  <thead class="thead-dark">
-                                                    <tr>
-                                                      <th scope="col">Branch ID</th>
-                                                      <th scope="col">Branch Name</th>
-                                                      <th scope="col">Email</th>
-                                                      <th scope="col">Manager</th>
-                                                      <th scope="col">Phone No.</th>
-                                                      <th scope="col">Pincode</th>
-                                                      <th scope="col">Address line 1</th>
-                                                      <th scope="col">Address line 2</th>
-                                                      <th scope="col">Address line 3</th>
-                                                      <th scope="col">Area</th>
-                                                      <th scope="col">City</th>
-                                                      <th scope="col">State</th>
-                                                      <th scope="col">Action</th>
-
-                                                    </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    <tr>
-                                                      <th scope="row">1</th>
-                                                      <td>Mark</td>
-                                                      <td>Otto</td>
-                                                      <td>hello</td>
-                                                      <td>Otto</td>
-                                                      <td>Otto</td>
-                                                      <td>Otto</td>
-                                                      <td>Otto</td>
-                                                      <td>Otto</td>
-                                                      <td>Otto</td>
-                                                      <td>Otto</td>
-                                                      <td>Otto</td>
-                                                      <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#EditModal"> <i class="fas fa-edit"></i>Edit</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                      <th scope="row">2</th>
-                                                      <td>Jacob</td>
-                                                      <td>Thornton</td>
-                                                        <td>Thornton ramsey</td>
-                                                        <td>Thornton</td>
-                                                        <td>Thornton</td>
-                                                        <td>Thornton</td>
-                                                        <td>hello</td>
-                                                        <td>Thornton</td>
-                                                        <td>Thornton</td>
-                                                        <td>Thornton</td>
-                                                        <td>Thornton</td>
-                                                        <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#EditModal"><i class="fas fa-edit"></i>Edit</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">3</th>
-                                                        <td>Larry</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>@twitter</td>
-                                                        <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#EditModal"><i class="fas fa-edit"></i>Edit</button></td>
-                                                    </tr>
-
-                                                   <tr>
-                                                      <th scope="row">3</th>
-                                                        <td>Larry</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                       <td>the Bird</td>
-                                                       <td>the Bird</td>
-                                                      <td>@twitter</td>
-                                                       <td><button type="button" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Edit</button></td>
-                                                    </tr>
-
-                                                   <tr>
-                                                      <th scope="row">3</th>
-                                                      <td>Larry</td>
-                                                      <td>the Bird</td>
-                                                      <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                       <td>the Bird</td>
-                                                       <td>the Bird</td>
-                                                      <td>@twitter</td>
-                                                       <td><button type="button" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Edit</button></td>
-                                                    </tr>
-
-                                                   <tr>
-                                                      <th scope="row">3</th>
-                                                      <td>Larry</td>
-                                                      <td>the Bird</td>
-                                                      <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                        <td>the Bird</td>
-                                                       <td>the Bird</td>
-                                                       <td>the Bird</td>
-                                                      <td>@twitter</td>
-                                                       <td><button type="button" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Edit</button></td>
-                                                    </tr>
-
+                                                    {% endfor %}
                                                   </tbody>
                                                 </table>
 
