@@ -15,6 +15,18 @@ def index():
     # testing()
     return render_template('manager_index.html')
 
+@manager.route('/changepassword',methods=['GET','POST'])
+def mchangepassword():
+    if request.method=="POST":
+        oldpassword = request.form['oldpassword']
+        newpassword = request.form['retypepassword']
+        mysql_query("update user_master SET password='{}' where email='{}'; ".format(newpassword,session['email']))
+        flash("Password Changed")
+        return redirect(url_for('manager.mchangepassword'))
+    return render_template("manager_cp.html")
+
+
+
 @manager.route('/personalinfo')
 def personalinfo():
     data = mysql_query("select * from user_master where email ='{}'; ".format(session['email']))

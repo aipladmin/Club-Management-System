@@ -41,7 +41,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed" href="{{ url_for('employee.leaveapplication') }}">
           <span>Leave application</span>
         </a>
       </li>
@@ -60,7 +60,7 @@
         </a>
         <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="#">Change password</a>
+            <a class="collapse-item" href="{{ url_for('employee.changepassword') }}">Change password</a>
           </div>
         </div>
       </li>
