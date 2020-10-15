@@ -44,6 +44,7 @@ def loginscr():
     return "loginscr"
 
 
+
 # LOGOUT CODE
 @auth.route('/logout')
 @login_required
