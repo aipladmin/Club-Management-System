@@ -1,6 +1,8 @@
-from types import MethodDescriptorType
+from types import MethodDescriptorType, MethodType
 from flask import Flask, render_template, Blueprint, request, g, session, redirect, url_for
 from functools import wraps
+
+import flask
 
 from ..controller import *
 manager = Blueprint('manager',
@@ -57,14 +59,23 @@ def personalinfoscr():
                         request.form['gender'],request.form['dob'],request.form['mobileno'],request.form['email'],
                         request.form['password'],request.form['addressline1'],request.form['addressline2'],
                         request.form['city'],request.form['state'],request.form['pincode'],request.form['bttn'] ) )
-    if session['role'].lower() == "admin":
-        return redirect(url_for('admin.index'))
-    if session['role'].lower() == "manager":
-        return redirect(url_for('manager.index'))
-    if session['role'].lower() == "member":
-        return redirect(url_for('member.index'))
-    if session['role'].lower() == "employee":
-        return redirect(url_for('employee.index'))
+
+
+    return redirect(url_for('manager.personalinfo'))
+
+
+@manager.route('/approve_leaveapplications',methods=['GET','POST'])
+def approve_leaveapplications():
+    if request.method=="POST":
+        BID = mysql_query("select manager_master.BID from manager_master inner join user_master on user_master.UID=manager_master.UID where user_master.email='{}'; ".format(session['email']))
+        BID = BID[0]["BID"]
+        return str(BID)
+    BID = mysql_query("select manager_master.BID from manager_master inner join user_master on user_master.UID=manager_master.UID where user_master.email='{}'; ".format(session['email']))
+    BID = BID[0]["BID"]
+    data = mysql_query("select *,emp_leave.Start_date as 'Start_Date' from employee_master inner join user_master on user_master.UID=employee_master.UID inner join emp_leave on emp_leave.BID=employee_master.BID where employee_master.BID={}; ".format(BID))
+    print(data)
+    return render_template('manager_leaveapplication.html',data=data)
+
 
 @manager.route('/amenities',methods=['GET','POST'])
 def amenities():
@@ -84,4 +95,48 @@ def amenities():
             return redirect(url_for('manager.amenities'))
     data = mysql_query("select amenities_master.AMID,amenities_master.Name,amenities_master.Description from amenities_master inner join manager_master ON amenities_master.MANID=manager_master.MANID inner join user_master on user_master.UID = manager_master.UID where user_master.email='{}';".format(session['email']))
     # data=session['email']
+
     return render_template('manager_amenities.html',data=data)
+
+############################################################# ADD & VIEW EMPLOYEES
+@manager.route('/addemployees',methods=['GET','POST'])
+def add_employees():
+    if request.method == "POST":
+        UID =mysql_query("SELECT UID FROM user_master WHERE UID = (SELECT MAX(UID) FROM user_master); ")
+        UID = UID[0]['UID']
+        BID = mysql_query("Select BID from manager_master inner join user_master ON manager_master.UID=user_master.UID where user_master.email='{}'; ".format(session['email']))
+        BID = BID[0]['BID']
+        mysql_query('''insert into user_master
+        (UTMID,first_name,middle_name,last_name,gender,email,password,dob,contact_no,address_line_1,address_line_2,address_area,city,state,country,pincode) values(3,'{}','{}','{}','{}','{}','{}','{}',{},'{}','{}','{}','{}','{}','{}',{});'''.format(
+            request.form['firstname'],request.form['middlename'],request.form['lastname'],request.form['gender'],request.form['email'],request.form['password'],
+            request.form['dob'],request.form['contactno'],request.form['adl1'],request.form['adl2'],request.form['area'],request.form['city'],request.form['state'],request.form['country'],
+            request.form['pincode']))
+        mysql_query(''' insert into employee_master(BID,UID,ECATID,Joining_Date,Salary) values({},{},{},'{}','{}');'''.format(BID,UID,request.form['category'],request.form['joiningdate'],request.form['salary']) )
+        flash("Employee Added")
+        return redirect(url_for('manager.add_employees'))
+   
+    employee_category = mysql_query("select * from employee_category")
+    return render_template("manager_addemployees.html",employee_category=employee_category)
+
+@manager.route('/viewemployees')
+def view_employees():
+    return "addemployees"
+############################################################### ADD & VIEW MEMBERS
+@manager.route('/addmembers',methods=['GET','POST'])
+def add_members():
+    if request.method =="POST":
+        UID =mysql_query("SELECT UID FROM user_master WHERE UID = (SELECT MAX(UID) FROM user_master); ")
+        UID = UID[0]['UID']
+        BID = mysql_query("Select BID from manager_master inner join user_master ON manager_master.UID=user_master.UID where user_master.email='{}'; ".format(session['email']))
+        BID = BID[0]['BID']
+        mysql_query('''insert into user_master
+        (UTMID,first_name,middle_name,last_name,gender,email,password,dob,contact_no,address_line_1,address_line_2,address_area,city,state,country,pincode) values(4,'{}','{}','{}','{}','{}','{}','{}',{},'{}','{}','{}','{}','{}','{}',{});'''.format(
+            request.form['firstname'],request.form['middlename'],request.form['lastname'],request.form['gender'],request.form['email'],request.form['password'],
+            request.form['dob'],request.form['contactno'],request.form['adl1'],request.form['adl2'],request.form['area'],request.form['city'],request.form['state'],request.form['country'],
+            request.form['pincode']))
+        mysql_query(''' insert into member_master(BID,UID,MEMID) values({},{},{});'''.format(BID,UID,request.form['membership']) )
+        flash("Employee Added")
+        return "POST"
+
+    membershipdata = mysql_query("select * from membership_master;")    
+    return render_template("manager_addmembers.html",membershipdata=membershipdata)

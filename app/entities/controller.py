@@ -20,10 +20,11 @@ app.config['MYSQL_DATABASE_HOST'] =  'contra.cjrbdmxkv84s.ap-south-1.rds.amazona
 mysql.init_app(app)
 
 def mysql_query(sql):
+    print(sql)
     connection = mysql.connect()
     cursor = connection.cursor()
     if sql.strip().split(' ')[0].lower() == "select" :
-        print(sql)
+        
         cursor.execute(sql)
         print(cursor._executed)
         
