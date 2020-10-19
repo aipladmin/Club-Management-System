@@ -40,50 +40,38 @@
       <!-- Nav Item - Pages Collapse Menu -->
 
      <li class="nav-item">
-        <a class="nav-link collapsed" href="manager_index.html">
+        <a class="nav-link collapsed" href="#">
           <span>Personal information</span>
         </a>
       </li>
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="{{ url_for('admin.memberdetails') }}" >
           <span>Member details</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="#">View members</a>
-            <a class="collapse-item" href="#">Due payments</a>
-            <a class="collapse-item" href="#">Payment History</a>
-          </div>
-        </div>
       </li>
 
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="{{ url_for('admin.empdetails') }}" >
           <span>Employee details</span>
         </a>
-        <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="#">View employees</a>
-            <a class="collapse-item" href="#">Blocked employees</a>
-          </div>
-        </div>
       </li>
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="{{ url_for('admin.mandetails') }}">
           <span>Manager details</span>
         </a>
-        <div id="collapseSeven" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="#">View managers</a>
-            <a class="collapse-item" href="#">Blocked managers</a>
-          </div>
-        </div>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url_for('admin.branch') }}">
+          <span>Manage branch</span>
+        </a>
       </li>
 
 
