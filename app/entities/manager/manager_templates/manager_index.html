@@ -47,30 +47,36 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="{{ url_for('manager.memberdetails') }}" >
           <span>Member details</span>
         </a>
+
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{{ url_for('manager.add_members') }}">Add members</a>
             <a class="collapse-item" href="#">View members</a>
             <a class="collapse-item" href="#">Due payments</a>
             <a class="collapse-item" href="#">Payment History</a>
           </div>
         </div>
+
       </li>
 
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="{{ url_for('manager.empdetails') }}">
           <span>Employee details</span>
         </a>
+
         <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="#">View employees</a>
+            <a class="collapse-item" href="{{ url_for('manager.add_employees') }}">Add employees</a>
+            <a class="collapse-item" href="{{ url_for('manager.view_employees') }}">View employees</a>
             <a class="collapse-item" href="#">Blocked employees</a>
           </div>
         </div>
+
       </li>
 
 
@@ -88,7 +94,7 @@
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="manager_index.html">
+        <a class="nav-link collapsed" href="{{ url_for('manager.approve_leaveapplications') }}">
           <span>Leave applications</span>
         </a>
       </li>
@@ -107,7 +113,7 @@
         </a>
         <div id="collapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="#">Change password</a>
+            <a class="collapse-item" href="{{ url_for('manager.mchangepassword') }}">Change password</a>
           </div>
         </div>
       </li>
@@ -182,19 +188,19 @@
         <!-- End of Topbar -->
         {% block content %}
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <!-- <div class="container-fluid"> -->
 
           <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-          </div>
+          </div> -->
 
           <!-- Content Row -->
-          <div class="row">
+          <!-- <div class="row"> -->
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -208,10 +214,10 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -225,10 +231,10 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -253,7 +259,7 @@
               </div>
             </div>
 
-            <!-- Pending Requests Card Example -->
+            Pending Requests Card Example
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
@@ -269,36 +275,36 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Content Row -->
 
-          <div class="row">
+          <!-- <div class="row"> -->
 
             <!-- Area Chart -->
            
 
             <!-- Pie Chart -->
             
-          </div>
+          <!-- </div> -->
 
           <!-- Content Row -->
-          <div class="row">
+          <!-- <div class="row"> -->
 
             <!-- Content Column -->
-            <div class="col-lg-6 mb-4">
+            <!-- <div class="col-lg-6 mb-4"> -->
 
               <!-- Project Card Example -->
               
 
               <!-- Color System -->
               
-            </div>
+            <!-- </div> -->
 
            
         <!-- /.container-fluid -->
 
-      </div>
+      <!-- </div> -->
       <!-- End of Main Content -->
 
       {% endblock %}

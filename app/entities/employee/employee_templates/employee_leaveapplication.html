@@ -1,0 +1,61 @@
+{% extends "employee_index.html" %}
+{% block content %}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Leave Application </h1>
+    </div>
+</div>
+      <div class="container-fluid">
+        <form action="{{ url_for('employee.leaveapplication') }}" method="POST">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Start Date</label>
+            <input type="date"  name="sdate" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">End Date</label>
+            <input type="date" name="edate" class="form-control" id="exampleInputPassword1">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Description</label>
+            <textarea class="form-control" name="description" rows="3" id="comment"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+       <br>
+       <hr>
+            <div class="container-fluid">
+                <div class="table-responsive">
+                <table class="table ">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>ID</th>
+                      <th>Description</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for x in dt %}
+                    <tr>
+                      <td>{{ x['LID'] }}</td>
+                      <td> {{ x['Description'] }} </td>
+                      <td> {{ x['Start_Date'] }}</td>
+                      <td>{{ x['End_Date'] }}</td>
+                      {% if x['Status']|lower == 'approved' %}
+                        <td>
+                            <button type="button" class="btn btn-outline-success">Approved</button>
+                        </td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+             </div>
+            </div>
+            
+{% endblock %}
