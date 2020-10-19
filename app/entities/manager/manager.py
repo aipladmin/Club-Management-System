@@ -72,4 +72,84 @@ def amenities():
             return redirect(url_for('manager.amenities'))
     data = mysql_query("select amenities_master.AMID,amenities_master.Name,amenities_master.Description from amenities_master inner join manager_master ON amenities_master.MANID=manager_master.MANID inner join user_master on user_master.UID = manager_master.UID where user_master.email='{}';".format(session['email']))
     # data=session['email']
+
     return render_template('manager_amenities.html',data=data)
+
+
+
+@manager.route('/empdetails')
+def empdetails():
+    EmpDetail = mysql_query('''SELECT 
+                                employee_category.Description,
+                                employee_master.Joining_Date,
+                                employee_master.Leaving_Date,
+                                employee_master.Time_period,
+                                employee_master.Salary,
+                                user_master.gender,
+                                user_master.dob,
+                                user_master.contact_no,
+                                user_master.email,
+                                CONCAT(user_master.first_name,
+                                        ' ',
+                                        user_master.middle_name,
+                                        ' ',
+                                        user_master.Last_name) AS 'fullname',
+                                CONCAT(user_master.address_line_1,
+                                        ', ',
+                                        user_master.address_line_2,
+                                        ', ',
+                                        user_master.address_area,
+                                        ',',
+                                        user_master.city,
+                                        ', ',
+                                        user_master.state,
+                                        ',',
+                                        user_master.pincode,
+                                        ',',
+                                        user_master.country) AS 'address'
+                            FROM
+                                user_master
+                                    INNER JOIN
+                                employee_master ON employee_master.uid = user_master.uid
+                                    INNER JOIN
+                                employee_category ON employee_category.ecatid = employee_master.ecatid;''')
+    return render_template('m_emp_details.html', EmpDetail=EmpDetail)
+
+
+@manager.route('/memberdetails')
+def memberdetails():
+    MemDetail = mysql_query('''SELECT 
+                                membership_master.memid,
+                                membership_master.description,
+                                membership_master.duration,
+                                user_master.gender,
+                                user_master.dob,
+                                user_master.contact_no,
+                                user_master.email,
+                                CONCAT(user_master.first_name,
+                                        ' ',
+                                        user_master.middle_name,
+                                        ' ',
+                                        user_master.Last_name) AS 'fullname',
+                                CONCAT(user_master.address_line_1,
+                                        ', ',
+                                        user_master.address_line_2,
+                                        ', ',
+                                        user_master.address_area,
+                                        ',',
+                                        user_master.city,
+                                        ', ',
+                                        user_master.state,
+                                        ',',
+                                        user_master.pincode,
+                                        ',',
+                                        user_master.country) AS 'address'
+                            FROM
+                                user_master
+                                    INNER JOIN
+                                member_master ON member_master.uid = user_master.uid
+                                    INNER JOIN
+                                membership_master ON membership_master.memid = member_master.memid;''')
+
+    return render_template('m_member_details.html', MemDetail=MemDetail)
+
