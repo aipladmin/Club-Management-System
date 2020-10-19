@@ -124,7 +124,71 @@ def addbranch():
 
 
 
+@admin.route('/branch')
+def branch():
+    branchdetails=mysql_query(''' SELECT 
+    branch_master.BID,
+    branch_master.branch_name,
+    branch_master.branch_email,
+    CONCAT(branch_master.Address_Line1,
+            ', ',branch_master.Address_Line2,
+            ', ',branch_master.Address_Line3) AS 'address',
+    branch_master.area,
+    branch_master.city,
+    branch_master.pincode,
+    branch_master.state,
+    
+    CONCAT(user_master.first_name,
+            ' ',
+            user_master.last_name) AS 'fullname'
+FROM
+    branch_master
+        INNER JOIN
+    manager_master ON manager_master.bid = branch_master.bid
+        INNER JOIN
+    user_master ON user_master.uid = manager_master.uid; ''')
 
+    return render_template('admin_branch.html',branchdetails=branchdetails)
+
+
+
+@admin.route('/addbranch',methods=["POST"])
+def addbranch():
+    if request.method=="POST":
+        if "insert" in request.form:
+            try:
+                mysql_query('''INSERT INTO `bcms`.`branch_master`
+                            (`branch_name`,
+                            `branch_email`,
+                            `Address_Line1`,
+                            `Address_Line2`,
+                            `Address_Line3`,
+                            `area`,
+                            `city`,
+                            `state`,
+                            `pincode`)
+                            VALUES('{}','{}','{}','{}','{}','{}','{}','{}',{}); '''.format(request.form['branch_name'],request.form['email'],request.form['addr1'],request.form['addr2'],request.form['addr3'],request.form['area'],request.form['city'],request.form['state'],request.form['pincode']))
+            except Exception as e:
+                return str(e)
+            return redirect(url_for("admin.branch"))
+
+        if "edit" in request.form:
+            mysql_query('''UPDATE `bcms`.`branch_master`
+                            SET
+                            `branch_name` = '{}',
+                            `branch_email` = '{}',
+                            `Address_Line1` = '{}',
+                            `Address_Line2` = '{}',
+                            `Address_Line3` = '{}',
+                            `area` = '{}',
+                            `city` = '{}',
+                            `state` = '{}',
+                            `pincode` = {}
+                            WHERE `BID` = {};
+                            '''.format(request.form['branch_name'],request.form['email'],request.form['addr1'],request.form['addr2'],request.form['addr3'],request.form['area'],request.form['city'],request.form['state'],request.form['pincode'],request.form['edit']))
+
+
+            return redirect(url_for("admin.branch"))
     return "hello there is an error! please fixx it bruh"
 
 
@@ -166,12 +230,16 @@ def empdetails():
                                     INNER JOIN
                                 employee_category ON employee_category.ecatid = employee_master.ecatid;''')
 
-
     return render_template('emp_details.html',EmpDetail=EmpDetail)
 
 
 @admin.route('/mandetails')
 def mandetails():
+
+
+
+    return render_template('manager_details.html')
+
     Man_Detail = mysql_query('''SELECT 
                                     branch_master.branch_name,
                                     manager_master.joining_date,
@@ -209,6 +277,7 @@ def mandetails():
 
 
 
+
 @admin.route('/memberdetails')
 def memberdetails():
     MemDetail = mysql_query('''SELECT 
@@ -237,16 +306,12 @@ def memberdetails():
                                         user_master.pincode,
                                         ',',
                                         user_master.country) AS 'address'
-                            FROM
-                                user_master
-                                    INNER JOIN
-                                member_master ON member_master.uid = user_master.uid
-                                    INNER JOIN
-                                membership_master ON membership_master.memid = member_master.memid;''')
+                                FROM
+                                    user_master
+                                        INNER JOIN
+                                    member_master ON member_master.uid = user_master.uid
+                                        INNER JOIN
+                                    membership_master ON membership_master.memid = member_master.memid;''')
     
     
     return render_template('member_details.html',MemDetail=MemDetail)
-
-
-
-
