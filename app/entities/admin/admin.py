@@ -32,29 +32,6 @@ def changepassword():
 
 
 
-@admin.route('/addbranch',methods=["POST"])
-def addbranch():
-    if request.method=="POST":
-        if "insert" in request.form:
-            try:
-                mysql_query('''INSERT INTO `bcms`.`branch_master`
-                            (`branch_name`,
-                            `branch_email`,
-                            `Address_Line1`,
-                            `Address_Line2`,
-                            `Address_Line3`,
-                            `area`,
-                            `city`,
-                            `state`,
-                            `pincode`)
-                            VALUES('{}','{}','{}','{}','{}','{}','{}','{}',{}); '''.format(request.form['branch_name'],request.form['email'],request.form['addr1'],request.form['addr2'],request.form['addr3'],request.form['area'],request.form['city'],request.form['state'],request.form['pincode']))
-            except Exception as e:
-                return str(e)
-
-            return redirect(url_for("admin.branch"))
-
-
-
 @admin.route('/branch')
 def branch():
     branchdetails=mysql_query(''' SELECT 
@@ -79,7 +56,10 @@ FROM
         INNER JOIN
     user_master ON user_master.uid = manager_master.uid; ''')
 
+   
+
     return render_template('admin_branch.html',branchdetails=branchdetails)
+
 
 
 
@@ -101,26 +81,13 @@ def addbranch():
                             VALUES('{}','{}','{}','{}','{}','{}','{}','{}',{}); '''.format(request.form['branch_name'],request.form['email'],request.form['addr1'],request.form['addr2'],request.form['addr3'],request.form['area'],request.form['city'],request.form['state'],request.form['pincode']))
             except Exception as e:
                 return str(e)
-            return redirect(url_for("admin.branch"))
-
-        if "edit" in request.form:
-            mysql_query('''UPDATE `bcms`.`branch_master`
-                            SET
-                            `branch_name` = '{}',
-                            `branch_email` = '{}',
-                            `Address_Line1` = '{}',
-                            `Address_Line2` = '{}',
-                            `Address_Line3` = '{}',
-                            `area` = '{}',
-                            `city` = '{}',
-                            `state` = '{}',
-                            `pincode` = {}
-                            WHERE `BID` = {};
-                            '''.format(request.form['branch_name'],request.form['email'],request.form['addr1'],request.form['addr2'],request.form['addr3'],request.form['area'],request.form['city'],request.form['state'],request.form['pincode'],request.form['edit']))
-
 
             return redirect(url_for("admin.branch"))
-    return "hello there is an error! please fixx it bruh"
+
+
+
+
+
 
 
 
