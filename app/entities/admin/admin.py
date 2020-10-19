@@ -30,8 +30,6 @@ def changepassword():
 
 
 
-
-
 @admin.route('/addbranch',methods=["POST"])
 def addbranch():
     if request.method=="POST":
@@ -52,6 +50,7 @@ def addbranch():
                 return str(e)
 
             return redirect(url_for("admin.branch"))
+
 
 
 
@@ -168,16 +167,46 @@ def empdetails():
                                 employee_category ON employee_category.ecatid = employee_master.ecatid;''')
 
 
-
-
     return render_template('emp_details.html',EmpDetail=EmpDetail)
 
 
 @admin.route('/mandetails')
 def mandetails():
+    Man_Detail = mysql_query('''SELECT 
+                                    branch_master.branch_name,
+                                    manager_master.joining_date,
+                                    manager_master.leaving_date,
+                                    user_master.gender,
+                                    user_master.dob,
+                                    user_master.contact_no,
+                                    user_master.email,
+                                    CONCAT(user_master.first_name,
+                                            ' ',
+                                            user_master.middle_name,
+                                            ' ',
+                                            user_master.Last_name) AS 'fullname',
+                                    CONCAT(user_master.address_line_1,
+                                            ', ',
+                                            user_master.address_line_2,
+                                            ', ',
+                                            user_master.address_area,
+                                            ',',
+                                            user_master.city,
+                                            ', ',
+                                            user_master.state,
+                                            ',',
+                                            user_master.pincode,
+                                            ',',
+                                            user_master.country) AS 'address'
+                                FROM
+                                    user_master
+                                        INNER JOIN
+                                    manager_master ON manager_master.uid = user_master.uid
+                                        INNER JOIN
+                                    branch_master ON manager_master.bid = branch_master.bid;''')
 
+    return render_template('manager_details.html', Man_Detail=Man_Detail)
 
-    return render_template('manager_details.html')
 
 
 @admin.route('/memberdetails')
@@ -217,3 +246,7 @@ def memberdetails():
     
     
     return render_template('member_details.html',MemDetail=MemDetail)
+
+
+
+
