@@ -29,7 +29,8 @@
       <hr class="sidebar-divider">
 
 
-    <!-- ************************MANAGER DASHBOARD*********************** -->
+
+     <!-- ************************MANAGER DASHBOARD*********************** -->
       {% if session['role'].lower() == "manager" %}
       <!-- Heading -->
 
@@ -46,9 +47,10 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="{{ url_for('manager.memberdetails') }}" >
           <span>Member details</span>
         </a>
+
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{{ url_for('manager.add_members') }}">Add members</a>
@@ -57,14 +59,16 @@
             <a class="collapse-item" href="#">Payment History</a>
           </div>
         </div>
+
       </li>
 
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="{{ url_for('manager.empdetails') }}">
           <span>Employee details</span>
         </a>
+
         <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{{ url_for('manager.add_employees') }}">Add employees</a>
@@ -72,6 +76,7 @@
             <a class="collapse-item" href="#">Blocked employees</a>
           </div>
         </div>
+
       </li>
 
 
@@ -81,7 +86,7 @@
         </a>
         <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="#">Member's complain</a>
+            <a class="collapse-item" href="manager_complaints">Member's complain</a>
             <a class="collapse-item" href="#">Employee's complain</a>
           </div>
         </div>
