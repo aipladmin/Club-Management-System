@@ -1,8 +1,5 @@
-from types import MethodDescriptorType, MethodType
 from flask import Flask, render_template, Blueprint, request, g, session, redirect, url_for
 from functools import wraps
-
-import flask
 
 from ..controller import *
 manager = Blueprint('manager',
@@ -13,11 +10,13 @@ manager = Blueprint('manager',
 
 @manager.route('/')
 @manager.route('/index')
+@login_required
 def index():
     # testing()
     return render_template('manager_index.html')
 
 @manager.route('/changepassword',methods=['GET','POST'])
+@login_required
 def mchangepassword():
     if request.method=="POST":
         oldpassword = request.form['oldpassword']
@@ -30,12 +29,14 @@ def mchangepassword():
 
 
 @manager.route('/personalinfo')
+@login_required
 def personalinfo():
     data = mysql_query("select * from user_master where email ='{}'; ".format(session['email']))
     # print(data)
     return render_template('manager_personalinfo.html',data=data)
 
 @manager.route('/personalinfoscr',methods=['POST'])
+@login_required
 def personalinfoscr():
     bttn = request.form['bttn']
     print(bttn)
@@ -66,6 +67,7 @@ def personalinfoscr():
 
 
 @manager.route('/approve_leaveapplications',methods=['GET','POST'])
+@login_required
 def approve_leaveapplications():
     if request.method=="POST":
         BID = mysql_query("select manager_master.BID from manager_master inner join user_master on user_master.UID=manager_master.UID where user_master.email='{}'; ".format(session['email']))
@@ -81,6 +83,7 @@ def approve_leaveapplications():
     
 
 @manager.route('/amenities',methods=['GET','POST'])
+@login_required
 def amenities():
     if request.method == "POST":
         MANID = mysql_query("Select MANID from manager_master inner join user_master where user_master.email='{}'; ".format( session['email'] ))
@@ -104,6 +107,7 @@ def amenities():
 
 ############################################################# ADD & VIEW EMPLOYEES
 @manager.route('/addemployees',methods=['GET','POST'])
+@login_required
 def add_employees():
     if request.method == "POST":
         UID =mysql_query("SELECT UID FROM user_master WHERE UID = (SELECT MAX(UID) FROM user_master); ")
@@ -123,10 +127,12 @@ def add_employees():
     return render_template("manager_addemployees.html",employee_category=employee_category)
 
 @manager.route('/viewemployees')
+@login_required
 def view_employees():
     return "addemployees"
 ############################################################### ADD & VIEW MEMBERS
 @manager.route('/addmembers',methods=['GET','POST'])
+@login_required
 def add_members():
     if request.method =="POST":
         UID =mysql_query("SELECT UID FROM user_master WHERE UID = (SELECT MAX(UID) FROM user_master); ")
@@ -149,6 +155,7 @@ def add_members():
 
 
 @manager.route('/empdetails')
+@login_required
 def empdetails():
     EmpDetail = mysql_query('''SELECT 
                                 employee_category.Description,
@@ -188,6 +195,7 @@ def empdetails():
 
 
 @manager.route('/memberdetails')
+@login_required
 def memberdetails():
     MemDetail = mysql_query('''SELECT 
                                 membership_master.memid,
