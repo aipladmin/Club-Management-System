@@ -15,10 +15,12 @@ admin = Blueprint('admin',
 
 @admin.route('/')
 @admin.route('/index')
+@login_required
 def index():
     return render_template('admin_index.html')
 
 @admin.route('/changepassword',methods=['GET','POST'])
+@login_required
 def changepassword():
     if request.method=="POST":
         oldpassword = request.form['oldpassword']
@@ -28,14 +30,8 @@ def changepassword():
         return redirect(url_for('admin.changepassword'))
     return render_template("admin_cp.html")
 
-
-
-
-
-
-
-
 @admin.route('/branch')
+@login_required
 def branch():
     branchdetails=mysql_query(''' SELECT 
     branch_master.BID,
@@ -59,7 +55,7 @@ FROM
         INNER JOIN
     user_master ON user_master.uid = manager_master.uid; ''')
 
-    return "hello there is an error! please fixx it bruh"
+    # return "hello there is an error! please fixx it bruh"
 
     return render_template('admin_branch.html',branchdetails=branchdetails)
 
@@ -67,6 +63,7 @@ FROM
 
 
 @admin.route('/addbranch',methods=["POST"])
+@login_required
 def addbranch():
     if request.method=="POST":
         if "insert" in request.form:
@@ -106,6 +103,7 @@ def addbranch():
 
 
 @admin.route('/empdetails')
+@login_required
 def empdetails():
     EmpDetail = mysql_query('''SELECT 
                                 employee_category.Description,
@@ -146,12 +144,8 @@ def empdetails():
 
 
 @admin.route('/mandetails')
+@login_required
 def mandetails():
-
-
-
-    return render_template('manager_details.html')
-
     Man_Detail = mysql_query('''SELECT 
                                     branch_master.branch_name,
                                     manager_master.joining_date,
@@ -191,6 +185,7 @@ def mandetails():
 
 
 @admin.route('/memberdetails')
+@login_required
 def memberdetails():
     MemDetail = mysql_query('''SELECT 
                                 membership_master.memid,

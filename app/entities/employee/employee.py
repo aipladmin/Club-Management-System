@@ -10,11 +10,13 @@ employee = Blueprint('employee',
 
 @employee.route('/')
 @employee.route('/index')
+@login_required
 def index():
     # testing()
     return render_template('employee_index.html')
 
 @employee.route('/leaveapplication',methods=['GET','POST'])
+@login_required
 def leaveapplication():
     if request.method=='POST':
         data = mysql_query("select employee_master.EID,employee_master.BID from emp_leave inner join employee_master on employee_master.EID=emp_leave.EID inner join branch_master on branch_master.BID = employee_master.BID inner join user_master on  user_master.UID=employee_master.UID where user_master.email='{}'; ".format(session['email']))
@@ -27,6 +29,7 @@ def leaveapplication():
 
 
 @employee.route('/changepassword',methods=['GET','POST'])
+@login_required
 def changepassword():
     if request.method=="POST":
         oldpassword = request.form['oldpassword']

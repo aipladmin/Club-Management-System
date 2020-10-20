@@ -8,16 +8,16 @@ member = Blueprint('member',
                 static_folder="member_templates",
                 url_prefix='/member')
 
-# @admin.route('/index')
-# def index():
-#     testing()
-#     return "render_template('index.html')"
+
+
 @member.route('/')
 @member.route('/index')
+@login_required
 def index():
     return render_template('member_index.html')
 
 @member.route('/changepassword',methods=['GET','POST'])
+@login_required
 def changepassword():
     if request.method=="POST":
         oldpassword = request.form['oldpassword']
@@ -29,16 +29,19 @@ def changepassword():
 
 
 @member.route('/test')
+@login_required
 def test():
     data = mysql_query("select * from user_type_master;")
     print(data)
     return "test Data"
 
 @member.route('/Complaints')
+@login_required
 def complaints():
 	return render_template('member_complaint.html')
 
 @member.route('/Feedback')
+@login_required
 def feedback():
 	return render_template('member_feedback.html')
 
