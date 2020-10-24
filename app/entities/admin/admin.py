@@ -19,6 +19,38 @@ admin = Blueprint('admin',
 def index():
     return render_template('admin_index.html')
 
+@admin.route('/personalinfo',methods=['GET','POST'])
+@login_required
+def personalinfo():
+    if request.method =="POST":
+        bttn = request.form['bttn']
+        print(bttn)
+        mysql_query(''' UPDATE `bcms`.`user_master`
+                    SET
+                    `first_name` = '{}',
+                    `middle_name` = '{}',
+                    `last_name` = '{}',
+                    `gender` = '{}',
+                    `dob` = '{}',
+                    `contact_no` = '{}',
+                    `email` = '{}',
+                    `password` = '{}',
+                    `address_line_1` = '{}',
+                    `address_line_2` = '{}',
+                    `city` = '{}',
+                    `state` = '{}',
+                    `pincode` = '{}'
+                    WHERE `UID` = {};  '''.format(
+                        request.form['firstname'],request.form['middlename'],request.form['lastname'],
+                        request.form['gender'],request.form['dob'],request.form['mobileno'],request.form['email'],
+                        request.form['password'],request.form['addressline1'],request.form['addressline2'],
+                        request.form['city'],request.form['state'],request.form['pincode'],request.form['bttn'] ) )
+        flash("Personal Info Updated.")
+        return redirect(url_for('admin.personalinfo'))
+    data = mysql_query("select * from user_master where email ='{}'; ".format(session['email']))
+    # print(data)
+    return render_template('admin_personalinfo.html',data=data)
+
 @admin.route('/changepassword',methods=['GET','POST'])
 @login_required
 def changepassword():
