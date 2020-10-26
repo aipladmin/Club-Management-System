@@ -1,7 +1,17 @@
 
+  <script>
+    $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
+} );
+  </script>
   <!-- Bootstrap core JavaScript-->
   <!-- <script src="vendor/jquery/jquery.min.js"></script> -->
-  <script src="{{ url_for('auth.static',filename='vendor/jquery/jquery.min.js') }}"></script>
+  <!-- <script src="{{ url_for('auth.static',filename='vendor/jquery/jquery.min.js') }}"></script> -->
   <script src="{{url_for('auth.static',filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
   <!-- Core plugin JavaScript-->
