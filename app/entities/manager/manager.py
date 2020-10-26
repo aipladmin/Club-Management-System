@@ -13,7 +13,7 @@ manager = Blueprint('manager',
 @login_required
 def index():
     # testing()
-    return render_template('manager_index.html')
+    return redirect(url_for('manager.personalinfo'))
 
 @manager.route('/changepassword',methods=['GET','POST'])
 @login_required
