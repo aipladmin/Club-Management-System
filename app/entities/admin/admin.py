@@ -172,6 +172,7 @@ def empdetails():
 
 @admin.route('/mandetails')
 def mandetails():
+    branch = mysql_query("select branch_master.BID,branch_master.branch_name from branch_master left join manager_master on manager_master.BID =branch_master.BID where manager_master.BID IS NULL ")
     Man_Detail = mysql_query('''SELECT 
                                     branch_master.branch_name,
                                     manager_master.joining_date,
@@ -205,13 +206,13 @@ def mandetails():
                                         INNER JOIN
                                     branch_master ON manager_master.bid = branch_master.bid;''')
 
-    return render_template('manager_details.html', Man_Detail=Man_Detail)
+    return render_template('manager_details.html', Man_Detail=Man_Detail,branch=branch)
 
 
 
 @admin.route('/memberdetails')
 def memberdetails():
-    MemDetail = mysql_query('''SELECT 
+    MemDetail = mysql_query ('''SELECT  
                                 membership_master.memid,
                                 membership_master.description,
                                 membership_master.duration,
@@ -247,6 +248,29 @@ def memberdetails():
     
     return render_template('member_details.html',MemDetail=MemDetail)
 
+<<<<<<< Updated upstream
 
 
 
+=======
+@admin.route('/addmanager',methods=["POST"])
+@login_required
+def addmanager():
+    if request.method=="POST":
+        if "insert" in request.form:
+            mysql_query('''insert into user_master
+                        (UTMID,first_name,middle_name,last_name,gender,email,password,dob,contact_no,address_line_1,address_line_2,address_area,city,state,country,pincode) values(2,'{}','{}','{}','{}','{}','{}','{}',{},'{}','{}','{}','{}','{}','{}',{});'''.format(
+                request.form['firstname'], request.form['middlename'], request.form['lastname'], request.form['gender'],
+                request.form['email'], request.form['password'],
+                request.form['dob'], request.form['contactno'], request.form['adl1'], request.form['adl2'],
+                request.form['area'], request.form['city'], request.form['state'], request.form['country'],
+                request.form['pincode']))
+
+            UID = mysql_query("select UID from user_master where email='{}'; ".format(request.form['email']))
+            UID= UID[0]['UID']
+
+            mysql_query('''insert into manager_master
+                        (BID,UID,Joining_Date) values({},{},'{}');'''.format(request.form['brch_id'],UID,request.form['joiningdate']))
+
+            return redirect(url_for("admin.mandetails"))
+>>>>>>> Stashed changes
