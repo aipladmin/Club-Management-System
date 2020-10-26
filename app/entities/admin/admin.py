@@ -17,7 +17,7 @@ admin = Blueprint('admin',
 @admin.route('/index')
 @login_required
 def index():
-    return render_template('admin_index.html')
+    return redirect(url_for('admin.personalinfo'))
 
 @admin.route('/personalinfo',methods=['GET','POST'])
 @login_required
@@ -254,3 +254,19 @@ def memberdetails():
     
     
     return render_template('member_details.html',MemDetail=MemDetail)
+
+####################################################################################################################################################
+####################################################################################################################################################
+#                                                                       REPORTS
+@admin.route('/user_master/',methods=['GET','POST'])
+def user_master():
+    if request.method == "POST":
+        data = mysql_query("select user_master.First_Name,user_master.middle_name,user_master.last_name from user_master where gender like '{}' or city like '{}' or state like '{}' or country like '{}';".format(request.form['gender'],request.form['city'],request.form['state'],request.form['country']   ))
+        ch = data[0].keys()
+        print(ch)
+        return render_template('reports/locationwise.html',data=data,ch=ch)
+    gender = mysql_query("Select distinct(gender) from user_master")
+    city = mysql_query("Select distinct(city) from user_master")
+    state = mysql_query("select distinct(state) from user_master")
+    country = mysql_query("select distinct(country) from user_master")
+    return render_template('reports/locationwise.html',gender=gender,city=city,state=state,country=country,data='')

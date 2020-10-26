@@ -13,7 +13,7 @@ employee = Blueprint('employee',
 @login_required
 def index():
     # testing()
-    return render_template('employee_index.html')
+    return redirect(url_for('employee.personalinfo'))
 
 
 @employee.route('/personalinfo', methods=['GET', 'POST'])

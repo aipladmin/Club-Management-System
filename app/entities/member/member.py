@@ -14,7 +14,7 @@ member = Blueprint('member',
 @member.route('/index')
 @login_required
 def index():
-    return render_template('member_index.html')
+    return redirect(url_for('member.personalinfo'))
 
 @member.route('/memberpersonalinfo',methods=['GET','POST'])
 @login_required
