@@ -20,10 +20,11 @@ app.config['MYSQL_DATABASE_HOST'] =  'contra.cjrbdmxkv84s.ap-south-1.rds.amazona
 mysql.init_app(app)
 
 def mysql_query(sql):
+    print(sql)
     connection = mysql.connect()
     cursor = connection.cursor()
     if sql.strip().split(' ')[0].lower() == "select" :
-        print(sql)
+        
         cursor.execute(sql)
         print(cursor._executed)
         
@@ -52,5 +53,5 @@ def login_required(f):
             return f(*args, **kwargs)
         else:
             # flash('You need to login first')
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.authenticate'))
     return wrap
