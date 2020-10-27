@@ -251,5 +251,52 @@ def memberdetails():
 
     return render_template('m_member_details.html', MemDetail=MemDetail)
 
+@manager.route('/Complaints')
+@login_required
+def emp_complaint_hist():
+    complaint_hist = mysql_query(''' SELECT 
+                                        `employee_complaint`.`ECOMID`,
+                                        `employee_complaint`.`EID`,
+                                        `employee_complaint`.`BID`,
+                                        `employee_complaint`.`Subject`,
+                                        `employee_complaint`.`Description`,
+                                        `employee_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`employee_complaint`;''')
+
+    return render_template('emp_complaints.html',complaint_hist=complaint_hist)
+
+@manager.route('/MemComplaints')
+@login_required
+def mem_complaint_history():
+    complaint_history = mysql_query(''' SELECT 
+                                        `user_complaint`.`CID`,
+                                        `user_complaint`.`BID`,
+                                        `user_complaint`.`MID`,
+                                        `user_complaint`.`Subject`,
+                                        `user_complaint`.`Description`,
+                                        `user_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`user_complaint`;''')
+
+    return render_template('member_complaints.html',complaint_history=complaint_history)
+
+@manager.route('/ViewFeedbacks')
+@login_required
+def mem_feedbacks():
+    feedbacks = mysql_query(''' SELECT 
+                                        `feedback_table`.`FID`,
+                                        `feedback_table`.`BID`,
+                                        `feedback_table`.`MID`,
+                                        `feedback_table`.`Subject`,
+                                        `feedback_table`.`Description`,
+                                        `feedback_table`.`Timestamp`
+                                    FROM
+                                        `bcms`.`feedback_table`;''')
+
+    return render_template('manager_feedbacks.html',feedbacks=feedbacks)
+
+
+
 
 

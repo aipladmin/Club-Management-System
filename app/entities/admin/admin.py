@@ -222,3 +222,50 @@ def memberdetails():
     
     
     return render_template('member_details.html',MemDetail=MemDetail)
+
+@admin.route('/MemComplaints')
+@login_required
+def mem_complaint_history():
+    complaint_history = mysql_query(''' SELECT 
+                                        `user_complaint`.`CID`,
+                                        `user_complaint`.`BID`,
+                                        `user_complaint`.`MID`,
+                                        `user_complaint`.`Subject`,
+                                        `user_complaint`.`Description`,
+                                        `user_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`user_complaint`;''')
+
+    return render_template('member_complaints.html',complaint_history=complaint_history)
+
+
+
+@admin.route('/EmpComplaints')
+@login_required
+def emp_complaint_hist():
+    complaint_hist = mysql_query(''' SELECT 
+                                        `employee_complaint`.`ECOMID`,
+                                        `employee_complaint`.`EID`,
+                                        `employee_complaint`.`BID`,
+                                        `employee_complaint`.`Subject`,
+                                        `employee_complaint`.`Description`,
+                                        `employee_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`employee_complaint`;''')
+
+    return render_template('emp_complaints.html',complaint_hist=complaint_hist)
+
+@admin.route('/ViewFeedbacks')
+@login_required
+def mem_feedbacks():
+    feedbacks = mysql_query(''' SELECT 
+                                        `feedback`.`FID`,
+                                        `feedback`.`BID`,
+                                        `feedback`.`MID`,
+                                        `feedback`.`Subject`,
+                                        `feedback`.`Description`,
+                                        `feedback`.`Timestamp`
+                                    FROM
+                                        `bcms`.`feedback`;''')
+
+    return render_template('admin_feedback.html',feedbacks=feedbacks)
