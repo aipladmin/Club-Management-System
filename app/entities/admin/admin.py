@@ -17,7 +17,39 @@ admin = Blueprint('admin',
 @admin.route('/index')
 @login_required
 def index():
-    return render_template('admin_index.html')
+    return redirect(url_for('admin.personalinfo'))
+
+@admin.route('/personalinfo',methods=['GET','POST'])
+@login_required
+def personalinfo():
+    if request.method =="POST":
+        bttn = request.form['bttn']
+        print(bttn)
+        mysql_query(''' UPDATE `bcms`.`user_master`
+                    SET
+                    `first_name` = '{}',
+                    `middle_name` = '{}',
+                    `last_name` = '{}',
+                    `gender` = '{}',
+                    `dob` = '{}',
+                    `contact_no` = '{}',
+                    `email` = '{}',
+                    `password` = '{}',
+                    `address_line_1` = '{}',
+                    `address_line_2` = '{}',
+                    `city` = '{}',
+                    `state` = '{}',
+                    `pincode` = '{}'
+                    WHERE `UID` = {};  '''.format(
+                        request.form['firstname'],request.form['middlename'],request.form['lastname'],
+                        request.form['gender'],request.form['dob'],request.form['mobileno'],request.form['email'],
+                        request.form['password'],request.form['addressline1'],request.form['addressline2'],
+                        request.form['city'],request.form['state'],request.form['pincode'],request.form['bttn'] ) )
+        flash("Personal Info Updated.")
+        return redirect(url_for('admin.personalinfo'))
+    data = mysql_query("select * from user_master where email ='{}'; ".format(session['email']))
+    # print(data)
+    return render_template('admin_personalinfo.html',data=data)
 
 @admin.route('/changepassword',methods=['GET','POST'])
 @login_required
@@ -146,6 +178,7 @@ def empdetails():
 @admin.route('/mandetails')
 @login_required
 def mandetails():
+    branch = mysql_query("select branch_master.BID,branch_master.branch_name from branch_master left join manager_master on manager_master.BID =branch_master.BID where manager_master.BID IS NULL ")
     Man_Detail = mysql_query('''SELECT 
                                     branch_master.branch_name,
                                     manager_master.joining_date,
@@ -179,7 +212,7 @@ def mandetails():
                                         INNER JOIN
                                     branch_master ON manager_master.bid = branch_master.bid;''')
 
-    return render_template('manager_details.html', Man_Detail=Man_Detail)
+    return render_template('manager_details.html', Man_Detail=Man_Detail,branch=branch)
 
 
 
@@ -187,7 +220,7 @@ def mandetails():
 @admin.route('/memberdetails')
 @login_required
 def memberdetails():
-    MemDetail = mysql_query('''SELECT 
+    MemDetail = mysql_query ('''SELECT  
                                 membership_master.memid,
                                 membership_master.description,
                                 membership_master.duration,
@@ -222,6 +255,7 @@ def memberdetails():
     
     
     return render_template('member_details.html',MemDetail=MemDetail)
+
 
 @admin.route('/MemComplaints')
 @login_required
@@ -269,3 +303,43 @@ def mem_feedbacks():
                                         `bcms`.`feedback`;''')
 
     return render_template('admin_feedback.html',feedbacks=feedbacks)
+
+
+@admin.route('/addmanager',methods=["POST"])
+@login_required
+def addmanager():
+    if request.method=="POST":
+        if "insert" in request.form:
+            mysql_query('''insert into user_master
+                        (UTMID,first_name,middle_name,last_name,gender,email,password,dob,contact_no,address_line_1,address_line_2,address_area,city,state,country,pincode) values(2,'{}','{}','{}','{}','{}','{}','{}',{},'{}','{}','{}','{}','{}','{}',{});'''.format(
+                request.form['firstname'], request.form['middlename'], request.form['lastname'], request.form['gender'],
+                request.form['email'], request.form['password'],
+                request.form['dob'], request.form['contactno'], request.form['adl1'], request.form['adl2'],
+                request.form['area'], request.form['city'], request.form['state'], request.form['country'],
+                request.form['pincode']))
+
+            UID = mysql_query("select UID from user_master where email='{}'; ".format(request.form['email']))
+            UID= UID[0]['UID']
+
+            mysql_query('''insert into manager_master
+                        (BID,UID,Joining_Date) values({},{},'{}');'''.format(request.form['brch_id'],UID,request.form['joiningdate']))
+
+            return redirect(url_for("admin.mandetails"))
+
+####################################################################################################################################################
+####################################################################################################################################################
+#                                                                       REPORTS
+@admin.route('/user_master/',methods=['GET','POST'])
+def user_master():
+    if request.method == "POST":
+        data = mysql_query("select user_master.First_Name,user_master.middle_name,user_master.last_name from user_master where gender like '{}' or city like '{}' or state like '{}' or country like '{}';".format(request.form['gender'],request.form['city'],request.form['state'],request.form['country']   ))
+        ch = data[0].keys()
+        print(ch)
+        return render_template('reports/locationwise.html',data=data,ch=ch)
+    gender = mysql_query("Select distinct(gender) from user_master")
+    city = mysql_query("Select distinct(city) from user_master")
+    state = mysql_query("select distinct(state) from user_master")
+    country = mysql_query("select distinct(country) from user_master")
+    return render_template('reports/locationwise.html',gender=gender,city=city,state=state,country=country,data='')
+
+
