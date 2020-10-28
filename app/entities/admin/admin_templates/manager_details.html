@@ -27,7 +27,126 @@
                 <a class="dropdown-item" href="#">Inactive managers</a>
               </div>
             </div>
+          </div>
+
+
+
+            <!--Add Manager Modal -->
+            <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModal" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="ModalTitle">Add New Manager</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                <div class="modal-body">
+
+                  <form autocomplete="off" method="POST" action="{{ url_for('admin.addmanager') }}">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputEmail4">First Name</label>
+                            <input type="text" name="firstname" class="form-control" id="inputEmail4">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPassword4">Middle Name</label>
+                            <input type="text" name="middlename" class="form-control" id="inputPassword4">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPassword4">Last Name</label>
+                            <input type="text" name="lastname" class="form-control" id="inputPassword4">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Email</label>
+                            <input type="text" name="email" class="form-control" id="inputEmail4">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputPassword4">Password</label>
+                            <input type="text" name="password" class="form-control" id="inputPassword4">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputEmail4">Gender</label>
+                            <select id="inputState" name="gender" class="form-control">
+                                <option selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPassword4">DOB</label>
+                            <input type="date" name="dob" class="form-control" id="inputPassword4">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPassword4">Contact No.</label>
+                            <input type="text" name="contactno" class="form-control" name="contactno" id="inputPassword4">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Address Line 1</label>
+                        <input type="text" name="adl1" class="form-control" id="inputAddress">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress2">Address line 2</label>
+                        <input type="text" name="adl2"  class="form-control" id="inputAddress2">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="inputCity">Area</label>
+                            <input type="text" name="area" class="form-control" id="inputCity">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputCity">City</label>
+                            <input type="text" name="city" class="form-control" id="inputCity">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputState">State</label>
+                            <input type="text" id="inputState" name="state" class="form-control">
+                        </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="inputCity">Country</label>
+                                <input type="text" id="inputcountry" name="country" class="form-control">
+                            </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="inputZip">Pincode</label>
+                            <input type="text" name="pincode" class="form-control" id="inputZip">
+                        </div>
+                        <div class="form-group col-md-4">
+                                <label for="inputEmail4">Joining Date</label>
+                                <input type="date" name="joiningdate" class="form-control" id="inputEmail4">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="branchID">Branch ID</label>
+                             <select name="brch_id" class="custom-select">
+                                <option value="" selected>Open this select menu</option>
+                                {% for data in branch %}
+                                <option value="{{ data['BID'] }}">{{ data['branch_name'] }}</option>
+                                {% endfor %}
+                             </select>
+                        </div>
+
+                    </div>
+
+
+                     <div class="modal-footer">
+                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                       <button type="submit" name="insert" class="btn btn-primary">Save</button>
+                     </div>
+                  </form>
+                </div>
+              </div>
             </div>
+          </div>
+
+                      <!-- END ADD MANAGER MODAL -->
 
 
                 <div class="col-12 table-responsive" >
