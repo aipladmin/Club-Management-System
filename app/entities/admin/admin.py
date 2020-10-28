@@ -261,7 +261,7 @@ def memberdetails():
 @admin.route('/user_master/',methods=['GET','POST'])
 def user_master():
     if request.method == "POST":
-        data = mysql_query("select user_master.First_Name,user_master.middle_name,user_master.last_name from user_master where gender like '{}' or city like '{}' or state like '{}' or country like '{}';".format(request.form['gender'],request.form['city'],request.form['state'],request.form['country']   ))
+        data = mysql_query("select user_master.First_Name,user_master.middle_name,user_master.last_name,user_master.email,user_master.contact_no from user_master inner join user_type_master on user_master.UTMID=user_type_master.UTMID where user_master.gender like '{}' or user_master.city like '{}' or user_master.state like '{}' or user_master.country like '{}';".format(request.form['gender'],request.form['city'],request.form['state'],request.form['country']   ))
         ch = data[0].keys()
         print(ch)
         return render_template('reports/locationwise.html',data=data,ch=ch)
@@ -269,4 +269,19 @@ def user_master():
     city = mysql_query("Select distinct(city) from user_master")
     state = mysql_query("select distinct(state) from user_master")
     country = mysql_query("select distinct(country) from user_master")
-    return render_template('reports/locationwise.html',gender=gender,city=city,state=state,country=country,data='')
+    role = mysql_query("select role from user_type_master")
+    return render_template('reports/locationwise.html',gender=gender,city=city,state=state,country=country,role=role,data='')
+
+@admin.route('/sdata/',methods=['GET','POST'])
+def salrieddata():
+    if request.method=="POST":
+        if request.form['branch'] =="":
+            data = mysql_query("select branch_master.branch_name,employee_category.description,truncate(AVG(employee_master.Salary),2) AS 'Average Salary' from employee_master inner join branch_master on employee_master.BID=branch_master.BID inner join employee_category  on employee_category.ECATID = employee_master.ECATID group by employee_category.Description;")
+        else:
+            data = mysql_query("select branch_master.branch_name,employee_category.description,truncate(AVG(employee_master.Salary),2) AS 'Average Salary' from employee_master inner join branch_master on employee_master.BID=branch_master.BID inner join employee_category  on employee_category.ECATID = employee_master.ECATID where branch_master.BID={} group by employee_category.Description; ".format(request.form['branch']))
+        return render_template('reports/salariedata.html', data=data, ch=data[0].keys())
+
+    branch = mysql_query("select BID,branch_name from branch_master")
+    return render_template('reports/salariedata.html', branch=branch, data='')
+    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
