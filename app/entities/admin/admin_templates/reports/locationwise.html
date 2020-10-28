@@ -11,7 +11,7 @@
     
     <form autocomplete="off" method="POST" action="{{ url_for('admin.user_master') }}">
          <div class="form-row">
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-2">
       <label for="inputEmail4">Gender</label>
         <select name="gender" class="custom-select">
             <option value="" selected>Open this select menu</option>
@@ -39,12 +39,21 @@
             {% endfor %}
         </select>
     </div>
-     <div class="form-group col-md-3">
+     <div class="form-group col-md-2">
       <label for="inputPassword4">Country</label>
       <select name="country" class="custom-select">
             <option value="" selected>Open this select menu</option>
             {% for data in country %}
             <option value="{{ data['country'] }}">{{ data['country'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputPassword4">Role</label>
+      <select name="role" class="custom-select">
+            <option value="" selected>Open this select menu</option>
+            {% for data in role %}
+            <option value="{{ data['role'] }}">{{ data['role'] }}</option>
             {% endfor %}
         </select>
     </div>
@@ -70,6 +79,8 @@
       <td>{{ x['First_Name'] }}</td>
       <td>{{ x['middle_name'] }}</td>
       <td>{{ x['last_name'] }}</td>
+      <td>{{ x['email'] }}</td>
+      <td>{{ x['contact_no'] }}</td>
     </tr>
     {% endfor %}
   </tbody>
