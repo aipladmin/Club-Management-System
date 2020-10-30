@@ -17,7 +17,7 @@ admin = Blueprint('admin',
 @admin.route('/index')
 @login_required
 def index():
-    return render_template('admin_index.html')
+    return redirect(url_for('admin.personalinfo'))
 
 @admin.route('/personalinfo',methods=['GET','POST'])
 @login_required
@@ -257,7 +257,52 @@ def memberdetails():
     return render_template('member_details.html',MemDetail=MemDetail)
 
 
+@admin.route('/MemComplaints')
+@login_required
+def mem_complaint_history():
+    complaint_history = mysql_query(''' SELECT 
+                                        `user_complaint`.`CID`,
+                                        `user_complaint`.`BID`,
+                                        `user_complaint`.`MID`,
+                                        `user_complaint`.`Subject`,
+                                        `user_complaint`.`Description`,
+                                        `user_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`user_complaint`;''')
 
+    return render_template('member_complaints.html',complaint_history=complaint_history)
+
+
+
+@admin.route('/EmpComplaints')
+@login_required
+def emp_complaint_hist():
+    complaint_hist = mysql_query(''' SELECT 
+                                        `employee_complaint`.`ECOMID`,
+                                        `employee_complaint`.`EID`,
+                                        `employee_complaint`.`BID`,
+                                        `employee_complaint`.`Subject`,
+                                        `employee_complaint`.`Description`,
+                                        `employee_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`employee_complaint`;''')
+
+    return render_template('emp_complaints.html',complaint_hist=complaint_hist)
+
+@admin.route('/ViewFeedbacks')
+@login_required
+def mem_feedbacks():
+    feedbacks = mysql_query(''' SELECT 
+                                        `feedback`.`FID`,
+                                        `feedback`.`BID`,
+                                        `feedback`.`MID`,
+                                        `feedback`.`Subject`,
+                                        `feedback`.`Description`,
+                                        `feedback`.`Timestamp`
+                                    FROM
+                                        `bcms`.`feedback`;''')
+
+    return render_template('admin_feedback.html',feedbacks=feedbacks)
 
 
 @admin.route('/addmanager',methods=["POST"])
@@ -315,9 +360,6 @@ def salrieddata():
 
     return render_template('reports/locationwise.html',gender=gender,city=city,state=state,country=country,data='')
 
-
-
-
 @admin.route('/MaxComplaints',methods=['GET','POST'])
 def MaxComplaints():
     if request.method == "POST":
@@ -358,4 +400,20 @@ def MaxFeedback():
             return render_template('reports/max_feedback.html',data=data,start=start,end=end)
 
     return render_template('reports/max_feedback.html',data=data)
+
+
+# employees in each category report
+
+@admin.route('/emp_category',methods=['GET','POST'])
+def emp_category():
+    #if request.method == 'POST':
+    data = mysql_query ("select employee_category.ecatid AS 'CATEGORY ID',  employee_category.description AS 'CATEGORY', count(employee_master.eid) AS 'TOTAL EMPLOYEES'  from employee_master inner join employee_category on employee_master.ecatid = employee_category.ecatid group by(employee_category.ecatid) order by count(employee_master.eid) desc");
+    return render_template('reports/emp_category.html', data=data,ch=data[0].keys())
+
+
+@admin.route('/emp_maxbranch',methods=['GET','POST'])
+def emp_max_branch():
+    #if request.method == 'POST':
+    data = mysql_query ("select branch_master.bid AS 'BRANCH ID', branch_master.branch_name AS 'BRANCH NAME' , count(employee_master.eid) AS 'NUMBER OF EMPLOYEES'from employee_master inner join branch_master on employee_master.bid = branch_master.bid group by(branch_master.bid) order by count(employee_master.eid) desc");
+    return render_template('reports/emp_maxbranch.html', data=data,ch=data[0].keys())
 

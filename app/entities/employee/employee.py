@@ -13,7 +13,7 @@ employee = Blueprint('employee',
 @login_required
 def index():
     # testing()
-    return render_template('employee_index.html')
+    return redirect(url_for('employee.personalinfo'))
 
 
 @employee.route('/personalinfo', methods=['GET', 'POST'])
@@ -72,3 +72,31 @@ def changepassword():
         flash("Password Changed")
         return redirect(url_for('employee.changepassword'))
     return render_template("employee_cp.html")
+
+@employee.route('/Complaints')
+@login_required
+def complaint_history():
+    complaint_hist = mysql_query(''' SELECT 
+                                        `employee_complaint`.`ECOMID`,
+                                        `employee_complaint`.`EID`,
+                                        `employee_complaint`.`BID`,
+                                        `employee_complaint`.`Subject`,
+                                        `employee_complaint`.`Description`,
+                                        `employee_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`employee_complaint`;''')
+
+    return render_template('employee_complaints.html',complaint_hist=complaint_hist)
+
+@employee.route('/addComplaint',methods=["POST"])
+@login_required
+def addComplaint():
+    if request.method=="POST":
+        EID = mysql_query("Select employee_master.EID,employee_master.BID from employee_master INNER JOIN user_master ON user_master.UID = employee_master.UID where user_master.email='{}'; ".format( session['email'] ))
+        EID,BID = EID[0]['EID'],EID[0]['BID']
+        print(EID)
+        mysql_query('''INSERT INTO `bcms`.`employee_complaint`(`BID`,`EID`,`Subject`,`Description`)
+                        VALUES({},{},'{}','{}');'''.format(BID,EID,request.form['subject'],request.form['desc']))
+    # NAME SHOULD BE SAME
+    return render_template('thankyou_complaint.html')
+
