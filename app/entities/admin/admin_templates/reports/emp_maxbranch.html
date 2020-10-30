@@ -8,6 +8,21 @@
       <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
     </div>
     {% include 'admin_messages.html' %}
+{#{{ data,start,end }}#}
+    <form autocomplete="off" method="POST" action="{{ url_for('admin.emp_max_branch') }}">
+         <div class="form-row">
+            <div class="form-group col-md-2">
+                <input type="date" name="st_date" class="form-control">
+            </div>
+            <div class="form-group col-md-2">
+                <input type="date" name="end_date" class="form-control">
+            </div>
+          <div class="form-group col-md-3">
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div>
+        </div>
+      </form>
+</div>
 
     <div class="container-fluid">
     <table id="example" class="table table-striped table-bordered" style="width:100%">

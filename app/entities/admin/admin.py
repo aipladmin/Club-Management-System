@@ -413,7 +413,14 @@ def emp_category():
 
 @admin.route('/emp_maxbranch',methods=['GET','POST'])
 def emp_max_branch():
-    #if request.method == 'POST':
-    data = mysql_query ("select branch_master.bid AS 'BRANCH ID', branch_master.branch_name AS 'BRANCH NAME' , count(employee_master.eid) AS 'NUMBER OF EMPLOYEES'from employee_master inner join branch_master on employee_master.bid = branch_master.bid group by(branch_master.bid) order by count(employee_master.eid) desc");
+    data = mysql_query("select branch_master.bid AS 'BRANCH ID', branch_master.branch_name AS 'BRANCH NAME' , count(employee_master.eid) AS 'NUMBER OF EMPLOYEES'from employee_master inner join branch_master on employee_master.bid = branch_master.bid group by(branch_master.bid) order by count(employee_master.eid) desc;");
+    if request.method == "POST":
+        start = request.form['st_date']
+        end = request.form['end_date']
+        if start != "" and end != "":
+            data = mysql_query("select branch_master.bid AS 'BRANCH ID', branch_master.branch_name AS 'BRANCH NAME' , count(employee_master.eid) AS 'NUMBER OF EMPLOYEES'from employee_master inner join branch_master on employee_master.bid = branch_master.bid where date(employee_master.joining_date) between '{start}' and '{end}' group by(branch_master.bid) order by count(employee_master.eid) desc;".format(start=start,end=end))
+            return render_template('reports/emp_maxbranch.html', data=data, start=start, end=end, ch=data[0].keys())
+
     return render_template('reports/emp_maxbranch.html', data=data,ch=data[0].keys())
+
 
