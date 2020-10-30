@@ -122,9 +122,13 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{{ url_for('admin.user_master') }}">Location Wise</a>
             <a class="collapse-item" href="{{ url_for('admin.salrieddata') }}">Salaried data</a>
-            <a class="collapse-item" href="#">Report 3</a>
+
+            <a class="collapse-item" href="{{ url_for('admin.MaxComplaints') }}">Branch Complaints</a>
+            <a class="collapse-item" href="{{ url_for('admin.MaxFeedback') }}">Feedback Report</a>
+            
             <a class="collapse-item" href="{{ url_for('admin.emp_category') }}">emp_category</a>
             <a class="collapse-item" href="{{ url_for('admin.emp_max_branch') }}">emp max branch</a>
+
           </div>
         </div>
       </li>
@@ -204,7 +208,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2020</span>
+            <span>Copyright &copy; BCMS 2020</span>
           </div>
         </div>
       </footer>
