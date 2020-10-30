@@ -342,4 +342,24 @@ def user_master():
     country = mysql_query("select distinct(country) from user_master")
     return render_template('reports/locationwise.html',gender=gender,city=city,state=state,country=country,data='')
 
+# employees in each category report
 
+@admin.route('/emp_category',methods=['GET','POST'])
+def emp_category():
+    #if request.method == 'POST':
+    data = mysql_query ("select employee_category.ecatid AS 'CATEGORY ID',  employee_category.description AS 'CATEGORY', count(employee_master.eid) AS 'TOTAL EMPLOYEES'  from employee_master inner join employee_category on employee_master.ecatid = employee_category.ecatid group by(employee_category.ecatid) order by count(employee_master.eid) desc");
+    return render_template('reports/emp_category.html', data=data,ch=data[0].keys())
+
+
+@admin.route('/emp_maxbranch',methods=['GET','POST'])
+def emp_max_branch():
+    #if request.method == 'POST':
+    data = mysql_query ("select branch_master.bid AS 'BRANCH ID', branch_master.branch_name AS 'BRANCH NAME' , count(employee_master.eid) AS 'NUMBER OF EMPLOYEES'from employee_master inner join branch_master on employee_master.bid = branch_master.bid group by(branch_master.bid) order by count(employee_master.eid) desc");
+    return render_template('reports/emp_maxbranch.html', data=data,ch=data[0].keys())
+
+
+
+
+
+
+       
