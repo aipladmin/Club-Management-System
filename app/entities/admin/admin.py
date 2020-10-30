@@ -306,9 +306,44 @@ def salrieddata():
 
     branch = mysql_query("select BID,branch_name from branch_master")
     return render_template('reports/salariedata.html', branch=branch, data='')
-    
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 
-    return render_template('reports/locationwise.html',gender=gender,city=city,state=state,country=country,data='')
+@admin.route('/membershipwise/',methods=['GET','POST'])
+def membershipwise():
+    if request.method == "POST":
+        branch = request.form['branch']
+        if branch != "":
+            data = mysql_query('''select branch_master.branch_name,count(member_master.MID) as 'Total No of of Members' from membership_master inner join member_master on membership_master.MEMID = member_master.MEMID inner join branch_master on branch_master.BID=member_master.BID where branch_master.bid ={} group by branch_master.BID ;'''.format(request.form['branch']))
 
+            return render_template('reports/membershipwise.html', 
+            branch=request.form['branch'], data=data, ch=data[0].keys())
+ 
+    data = mysql_query('''select branch_master.branch_name,count(member_master.MID) as 'Total No of of Members' from membership_master inner join member_master on membership_master.MEMID = member_master.MEMID inner join branch_master on branch_master.BID=member_master.BID group by branch_master.BID; ''')
 
+    branch = mysql_query("select BID,branch_name from branch_master")
+    return render_template('reports/membershipwise.html',branch=branch,data=data,
+    ch=data[0].keys())
+
+@admin.route('/leavesGranted/',methods=['GET','POST'])
+def leavesGranted():
+    if request.method=='POST':
+        data = mysql_query('''SELECT 
+        branch_master.branch_name,
+        SUM(IF(emp_leave.Status = 'Approved',1,0)) AS 'Leaves Approved',
+        SUM(IF(emp_leave.Status = 'Disapproved',1,0)) AS 'Leaves Disapproved'
+        FROM
+        branch_master
+            INNER JOIN
+        emp_leave ON branch_master.BID = emp_leave.BID where branch_master.BID={} group by branch_master.BID;'''.format(request.form['branch']))
+        return render_template('reports/leavesGranted.html', branch=request.form['branch'],data=data, ch=data[0].keys())
+    data = mysql_query('''SELECT 
+    branch_master.branch_name,
+    SUM(IF(emp_leave.Status = 'Approved',1,0)) AS 'Leaves Approved',
+    SUM(IF(emp_leave.Status = 'Disapproved',1,0)) AS 'Leaves Disapproved'
+    FROM
+    branch_master
+        INNER JOIN
+    emp_leave ON branch_master.BID = emp_leave.BID group by branch_master.BID;''')
+
+    branch = mysql_query("select BID,branch_name from branch_master")
+    return render_template('reports/leavesGranted.html',branch=branch,data=data,
+    ch=data[0].keys())
