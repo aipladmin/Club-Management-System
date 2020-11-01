@@ -94,8 +94,8 @@
         </a>
         <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="manager_complaints">Member's complain</a>
-            <a class="collapse-item" href="#">Employee's complain</a>
+            <a class="collapse-item" href="{{ url_for('manager.mem_complaint_history') }}">Member's complaint</a>
+            <a class="collapse-item" href="{{ url_for('manager.emp_complaint_hist') }}">Employee's complaint</a>
           </div>
         </div>
       </li>
@@ -109,7 +109,7 @@
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="manager_index.html">
+        <a class="nav-link collapsed" href="{{ url_for('manager.mem_feedbacks') }}">
           <span>View feedback</span>
         </a>
       </li>

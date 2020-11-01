@@ -257,6 +257,54 @@ def memberdetails():
     return render_template('member_details.html',MemDetail=MemDetail)
 
 
+@admin.route('/MemComplaints')
+@login_required
+def mem_complaint_history():
+    complaint_history = mysql_query(''' SELECT 
+                                        `user_complaint`.`CID`,
+                                        `user_complaint`.`BID`,
+                                        `user_complaint`.`MID`,
+                                        `user_complaint`.`Subject`,
+                                        `user_complaint`.`Description`,
+                                        `user_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`user_complaint`;''')
+
+    return render_template('member_complaints.html',complaint_history=complaint_history)
+
+
+
+@admin.route('/EmpComplaints')
+@login_required
+def emp_complaint_hist():
+    complaint_hist = mysql_query(''' SELECT 
+                                        `employee_complaint`.`ECOMID`,
+                                        `employee_complaint`.`EID`,
+                                        `employee_complaint`.`BID`,
+                                        `employee_complaint`.`Subject`,
+                                        `employee_complaint`.`Description`,
+                                        `employee_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`employee_complaint`;''')
+
+    return render_template('emp_complaints.html',complaint_hist=complaint_hist)
+
+@admin.route('/ViewFeedbacks')
+@login_required
+def mem_feedbacks():
+    feedbacks = mysql_query(''' SELECT 
+                                        `feedback`.`FID`,
+                                        `feedback`.`BID`,
+                                        `feedback`.`MID`,
+                                        `feedback`.`Subject`,
+                                        `feedback`.`Description`,
+                                        `feedback`.`Timestamp`
+                                    FROM
+                                        `bcms`.`feedback`;''')
+
+    return render_template('admin_feedback.html',feedbacks=feedbacks)
+
+
 @admin.route('/addmanager',methods=["POST"])
 @login_required
 def addmanager():
@@ -277,6 +325,7 @@ def addmanager():
                         (BID,UID,Joining_Date) values({},{},'{}');'''.format(request.form['brch_id'],UID,request.form['joiningdate']))
 
             return redirect(url_for("admin.mandetails"))
+
 
 ####################################################################################################################################################
 ####################################################################################################################################################
@@ -319,6 +368,7 @@ def membershipwise():
  
     data = mysql_query('''select branch_master.branch_name,count(member_master.MID) as 'Total No of of Members' from membership_master inner join member_master on membership_master.MEMID = member_master.MEMID inner join branch_master on branch_master.BID=member_master.BID group by branch_master.BID; ''')
 
+
     branch = mysql_query("select BID,branch_name from branch_master")
     return render_template('reports/membershipwise.html',branch=branch,data=data,
     ch=data[0].keys())
@@ -343,6 +393,70 @@ def leavesGranted():
     branch_master
         INNER JOIN
     emp_leave ON branch_master.BID = emp_leave.BID group by branch_master.BID;''')
+
+@admin.route('/MaxComplaints',methods=['GET','POST'])
+def MaxComplaints():
+    if request.method == "POST":
+        start = request.form['st_date']
+        end = request.form['end_date']
+        complaint = request.form['complaint']
+
+        if complaint.lower() == "member" and start == "" and end == "":
+            data = mysql_query("select count(user_complaint.cid) as 'Total',branch_master.bid,branch_master.branch_name from user_complaint inner join branch_master on user_complaint.bid = branch_master.bid group by(branch_master.bid) order by count(user_complaint.cid) desc;")
+            return render_template('reports/max_complaints.html', data=data)
+
+        if complaint.lower() == "member" and start != "" and end != "":
+            data = mysql_query("select count(user_complaint.cid) as 'Total', date(user_complaint.timestamp) as 'comp_dt' ,branch_master.bid,branch_master.branch_name from user_complaint inner join branch_master on user_complaint.bid = branch_master.bid  where date(user_complaint.timestamp) between '{start}' and '{end}' group by(branch_master.bid) order by count(user_complaint.cid) desc;".format(start=start,end=end))
+            return render_template('reports/max_complaints.html', data=data, start=start, end=end)
+
+        if complaint.lower() == "employee" and start == "" and end == "":
+            data = mysql_query("select count(employee_complaint.ecomid) as 'Total',branch_master.bid,branch_master.branch_name from employee_complaint inner join branch_master on employee_complaint.bid = branch_master.bid group by(branch_master.bid) order by count(employee_complaint.ecomid) desc;")
+            return render_template('reports/max_complaints.html', data=data)
+
+        if complaint.lower() == "employee" and start != "" and end != "":
+            data = mysql_query("select count(employee_complaint.ecomid) as 'Total', date(employee_complaint.timestamp) as 'comp_dt' ,branch_master.bid,branch_master.branch_name from employee_complaint inner join branch_master on employee_complaint.bid = branch_master.bid where date(employee_complaint.timestamp) between '{start}' and '{end}' group by(branch_master.bid) order by count(employee_complaint.ecomid) desc;".format(start=start,end=end))
+            return render_template('reports/max_complaints.html', data=data, start=start, end=end)
+
+    return render_template('reports/max_complaints.html')
+
+
+
+@admin.route('/MaxFeedback',methods=['GET','POST'])
+def MaxFeedback():
+    data = mysql_query("select count(feedback.fid) as 'total',branch_master.bid,branch_master.branch_name from feedback inner join branch_master on feedback.bid = branch_master.bid group by(branch_master.bid) order by count(feedback.fid) desc;")
+    # return render_template('reports/max_feedback.html', data=data)
+    if request.method == "POST":
+        start = request.form['st_date']
+        end = request.form['end_date']
+        # if start == "" and end == "":
+        if start != "" and end != "":
+            data = mysql_query("select count(feedback.fid) as 'total', date(feedback.timestamp) as 'fb_date' ,branch_master.bid,branch_master.branch_name from feedback inner join branch_master on feedback.bid = branch_master.bid where date(feedback.Timestamp) between '{start}' and '{end}' group by branch_master.bid order by 'total' desc;".format(start=start,end=end))
+            return render_template('reports/max_feedback.html',data=data,start=start,end=end)
+
+    return render_template('reports/max_feedback.html',data=data)
+
+
+# employees in each category report
+
+@admin.route('/emp_category',methods=['GET','POST'])
+def emp_category():
+    #if request.method == 'POST':
+    data = mysql_query ("select employee_category.ecatid AS 'CATEGORY ID',  employee_category.description AS 'CATEGORY', count(employee_master.eid) AS 'TOTAL EMPLOYEES'  from employee_master inner join employee_category on employee_master.ecatid = employee_category.ecatid group by(employee_category.ecatid) order by count(employee_master.eid) desc");
+    return render_template('reports/emp_category.html', data=data,ch=data[0].keys())
+
+
+@admin.route('/emp_maxbranch',methods=['GET','POST'])
+def emp_max_branch():
+    data = mysql_query("select branch_master.bid AS 'BRANCH ID', branch_master.branch_name AS 'BRANCH NAME' , count(employee_master.eid) AS 'NUMBER OF EMPLOYEES'from employee_master inner join branch_master on employee_master.bid = branch_master.bid group by(branch_master.bid) order by count(employee_master.eid) desc;");
+    if request.method == "POST":
+        start = request.form['st_date']
+        end = request.form['end_date']
+        if start != "" and end != "":
+            data = mysql_query("select branch_master.bid AS 'BRANCH ID', branch_master.branch_name AS 'BRANCH NAME' , count(employee_master.eid) AS 'NUMBER OF EMPLOYEES'from employee_master inner join branch_master on employee_master.bid = branch_master.bid where date(employee_master.joining_date) between '{start}' and '{end}' group by(branch_master.bid) order by count(employee_master.eid) desc;".format(start=start,end=end))
+            return render_template('reports/emp_maxbranch.html', data=data, start=start, end=end, ch=data[0].keys())
+
+    return render_template('reports/emp_maxbranch.html', data=data,ch=data[0].keys())
+
 
     branch = mysql_query("select BID,branch_name from branch_master")
     return render_template('reports/leavesGranted.html',branch=branch,data=data,
