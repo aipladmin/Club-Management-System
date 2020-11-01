@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Blueprint, request, g, session, redirect, url_for
 from functools import wraps
+import random,math
 
 from ..controller import *
 manager = Blueprint('manager',
@@ -251,5 +252,17 @@ def memberdetails():
 
     return render_template('m_member_details.html', MemDetail=MemDetail)
 
-
+@manager.route('/managerpayments',methods=['GET','POST'])
+def managerpayments():
+    pid = mysql_query('select PID,Method from payment_master')
+    UID = mysql_query('''select user_master.UID,user_master.first_name from user_master where UTMID=4; ''')
+    
+    
+    high_roller=mysql_query('select PAYID from payment;')
+    
+    for x in range(0,297):
+        rand = random.randint(100000,400000)
+        print(high_roller[x]['PAYID'])
+        mysql_query('update payment set Amount={} where PAYID={};'.format(int(rand),int(x)))
+    return render_template('/managerpayments.html',pid=pid,UID=UID)
 
