@@ -1,37 +1,35 @@
-{% extends "member_index.html" %}
+{% extends "employee_index.html" %}
 {% block content %}
 <!-- Page Heading -->
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-800" align="center" style="padding-left: 15px;">Member Feedback </h1>
+		<h1 class="h3 mb-0 text-gray-800" align="center" style="padding-left: 15px;">Complaints </h1>
 		<!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
 	</div>
-	<form autocomplete="off" method="POST" action="{{ url_for('member.addFeedback') }}" style="box-sizing: content-box; padding-left: 15px;" >
+	<form autocomplete="off" method="POST" action="{{ url_for('employee.addComplaint') }}" style="box-sizing: content-box; padding-left: 15px;" >
         <div class="form-row" style="display:grid">
+           
             <div class="form-group col-md-4">
-              <label for="inputEmail4">Feedback Subject</label>
+              <label for="inputEmail4">Complaint Subject</label>
               <input type="text" name="subject" class="form-control" id="inputEmail4">
             </div>
         </div>
          <div class="form-row">
-                <label for="inputEmail4">Feedback Message</label>
-          </div>
+                <label for="inputEmail4">Complaint Description</label> </div>
           <div class="form-row">
-    <textarea class="form-control" name="desc" id="description" rows="5" style="width:400px;"></textarea>
+    <textarea name="desc" class="form-control" id="description" rows="5" style="width:400px;"></textarea>
          </div>
          <div class="form-row" style ="padding-top: 20px">
-          
-         <input style="width:100px; border-radius:5px; border:1px solid skyblue;" name="insert" class="btn btn-primary" type="submit" value="Submit" />
+         <input style="width:100px; border-radius:5px; border:1px solid skyblue;" name ="Insert" class="btn btn-primary" type="submit" value="Submit" />
          <div class="form-col" style ="padding-left: 20px">
           <input style="width:100px; border-radius:5px; border:1px solid red; padding-left: 20px" class="btn btn-danger" type="reset" value="Reset" />
       </div>
   </div>
-  
 </form>
 
 <hr>
  <div class="form-row">
-    <h1 class="h3 mb-0 text-gray-800" align="center" style="padding-left: 15px;">Feedback History</h1>
-  </div>
+		<h1 class="h3 mb-0 text-gray-800" align="center" style="padding-left: 15px;">Complaint History</h1>
+	</div>
 <hr />
 <div class="col-12 table-responsive" >
 
@@ -45,7 +43,7 @@
                       
                     </thead>
                        <tbody>
-                       {% for x in feedback_hist %}
+                       {% for x in complaint_hist %}
                          <tr>
                           <td>{{ x['Subject'] }}</td>
                           <td>{{ x['Timestamp'] }}</td>

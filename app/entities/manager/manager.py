@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Blueprint, request, g, session, redirect, url_for
 from functools import wraps
+import random,math,datetime
 
 from ..controller import *
 manager = Blueprint('manager',
@@ -250,6 +251,79 @@ def memberdetails():
                                 membership_master ON membership_master.memid = member_master.memid;''')
 
     return render_template('m_member_details.html', MemDetail=MemDetail)
+
+
+@manager.route('/managerpayments',methods=['GET','POST'])
+def managerpayments():
+    pid = mysql_query('select PID,Method from payment_master')
+    UID = mysql_query('''select user_master.UID,user_master.first_name from user_master where UTMID=4; ''')
+    # GAFLA 2.0
+    Pg = mysql_query("select PAYID, Amount from payment;")
+    for x in Pg:
+        # print(x)
+        start_date = datetime.date(2019, 1, 1)
+        end_date = datetime.date(2020, 10, 20)
+        time_between_dates = end_date - start_date
+        days_between_dates = time_between_dates.days
+        random_number_of_days = random.randrange(days_between_dates)
+        random_date = start_date + \
+            datetime.timedelta(days=random_number_of_days)
+        # print(random_date)
+        rnum = int(random.randint(10, 30))
+        amount = x['Amount']*(rnum/100)
+        print(amount)
+        mysql_query("insert into transaction(PAYID,Amount,t_date) values({},{},'{}'); ".format(x['PAYID'],int(amount),random_date))
+    # high_roller=mysql_query('select PAYID from payment;')
+    # for x in range(0,297):
+    #     rand = random.randint(100000,400000)
+    #     print(high_roller[x]['PAYID'])
+    #     mysql_query('update payment set Amount={} where PAYID={};'.format(int(rand),int(x)))
+    return render_template('/managerpayments.html',pid=pid,UID=UID)
+
+@manager.route('/Complaints')
+@login_required
+def emp_complaint_hist():
+    complaint_hist = mysql_query(''' SELECT 
+                                        `employee_complaint`.`ECOMID`,
+                                        `employee_complaint`.`EID`,
+                                        `employee_complaint`.`BID`,
+                                        `employee_complaint`.`Subject`,
+                                        `employee_complaint`.`Description`,
+                                        `employee_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`employee_complaint`;''')
+
+    return render_template('emp_complaints.html',complaint_hist=complaint_hist)
+
+@manager.route('/MemComplaints')
+@login_required
+def mem_complaint_history():
+    complaint_history = mysql_query(''' SELECT 
+                                        `user_complaint`.`CID`,
+                                        `user_complaint`.`BID`,
+                                        `user_complaint`.`MID`,
+                                        `user_complaint`.`Subject`,
+                                        `user_complaint`.`Description`,
+                                        `user_complaint`.`Timestamp`
+                                    FROM
+                                        `bcms`.`user_complaint`;''')
+
+    return render_template('member_complaints.html',complaint_history=complaint_history)
+
+@manager.route('/ViewFeedbacks')
+@login_required
+def mem_feedbacks():
+    feedbacks = mysql_query(''' SELECT 
+                                        `feedback_table`.`FID`,
+                                        `feedback_table`.`BID`,
+                                        `feedback_table`.`MID`,
+                                        `feedback_table`.`Subject`,
+                                        `feedback_table`.`Description`,
+                                        `feedback_table`.`Timestamp`
+                                    FROM
+                                        `bcms`.`feedback_table`;''')
+
+    return render_template('manager_feedbacks.html',feedbacks=feedbacks)
 
 
 
