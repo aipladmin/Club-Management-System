@@ -1,6 +1,6 @@
 from flask import Flask, render_template, Blueprint, request, g, session, redirect, url_for
 from functools import wraps
-import random,math
+import random,math,datetime
 
 from ..controller import *
 manager = Blueprint('manager',
@@ -257,14 +257,27 @@ def memberdetails():
 def managerpayments():
     pid = mysql_query('select PID,Method from payment_master')
     UID = mysql_query('''select user_master.UID,user_master.first_name from user_master where UTMID=4; ''')
-    
-    
-    high_roller=mysql_query('select PAYID from payment;')
-    
-    for x in range(0,297):
-        rand = random.randint(100000,400000)
-        print(high_roller[x]['PAYID'])
-        mysql_query('update payment set Amount={} where PAYID={};'.format(int(rand),int(x)))
+    # GAFLA 2.0
+    Pg = mysql_query("select PAYID, Amount from payment;")
+    for x in Pg:
+        # print(x)
+        start_date = datetime.date(2019, 1, 1)
+        end_date = datetime.date(2020, 10, 20)
+        time_between_dates = end_date - start_date
+        days_between_dates = time_between_dates.days
+        random_number_of_days = random.randrange(days_between_dates)
+        random_date = start_date + \
+            datetime.timedelta(days=random_number_of_days)
+        # print(random_date)
+        rnum = int(random.randint(10, 30))
+        amount = x['Amount']*(rnum/100)
+        print(amount)
+        mysql_query("insert into transaction(PAYID,Amount,t_date) values({},{},'{}'); ".format(x['PAYID'],int(amount),random_date))
+    # high_roller=mysql_query('select PAYID from payment;')
+    # for x in range(0,297):
+    #     rand = random.randint(100000,400000)
+    #     print(high_roller[x]['PAYID'])
+    #     mysql_query('update payment set Amount={} where PAYID={};'.format(int(rand),int(x)))
     return render_template('/managerpayments.html',pid=pid,UID=UID)
 
 @manager.route('/Complaints')
