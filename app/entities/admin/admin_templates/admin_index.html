@@ -88,11 +88,11 @@
       </li>
 
 
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="manager_index.html">
           <span>Leave applications</span>
         </a>
-      </li>
+      </li> -->
 
 
       <li class="nav-item">
@@ -124,6 +124,15 @@
             <a class="collapse-item" href="{{ url_for('admin.salrieddata') }}">Salaried data</a>
             <a class="collapse-item" href="{{ url_for('admin.membershipwise') }}"> Membership wise</a>
             <a class="collapse-item" href="{{ url_for('admin.leavesGranted') }}"> Leaves Granted</a>
+
+            <a class="collapse-item" href="{{ url_for('admin.MaxComplaints') }}">Branch Complaints</a>
+            <a class="collapse-item" href="{{ url_for('admin.MaxFeedback') }}">Feedback Report</a>
+            
+            <a class="collapse-item" href="{{ url_for('admin.emp_category') }}">Employee Category wise</a>
+            <a class="collapse-item" href="{{ url_for('admin.emp_max_branch') }}">Branch Employees wise</a>
+             <a class="collapse-item" href="{{ url_for('admin.payment') }}">Payments</a>
+            <!-- <a class="collapse-item" href="{{ url_for('admin.indipayments') }}"> Individual Payments</a> -->
+
           </div>
         </div>
       </li>
