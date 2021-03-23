@@ -2,6 +2,9 @@
 **Bonjour**,
 This Markdown file will help you learn,install and run the python application on flask web framework.
 
+## Stats
+![Lines of code](https://img.shields.io/tokei/lines/github/madhavparikh99/MIT-TriSem-1?style=plastic)
+
 ## Prerequisite
 - [Python 3.7+](https://www.python.org/downloads/)
 - [PIP 20.0+](https://bootstrap.pypa.io/get-pip.py)
